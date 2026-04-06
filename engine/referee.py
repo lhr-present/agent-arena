@@ -75,11 +75,31 @@ def fetch_moltbook_posts(since_turn: int, agent_handle: str) -> list[dict]:
         sys.path.insert(0, os.path.expanduser('~/projects/void_pulse'))
         from moltbook import MoltbookAPI
         api = MoltbookAPI()
-        # Get agent's recent posts via search
-        result = api.search(f'author:{agent_handle} ⟨', search_type='posts', limit=20)
         posts = []
+
+        # Strategy 1: search for action tag pattern
+        result = api.search('⟨', search_type='posts', limit=25)
         if isinstance(result, dict):
-            posts = result.get('posts', result.get('results', []))
+            candidates = result.get('posts', result.get('results', []))
+            # Filter to this agent's posts
+            for p in candidates:
+                author = p.get('author', {})
+                name = author.get('name', '') if isinstance(author, dict) else str(author)
+                if name.lower() == agent_handle.lower():
+                    posts.append(p)
+
+        # Strategy 2: get hot feed and filter by author
+        if not posts:
+            feed = api.get_feed(sort='new', limit=50)
+            if isinstance(feed, dict):
+                all_posts = feed.get('posts', feed.get('data', {}).get('posts', []))
+                for p in all_posts:
+                    author = p.get('author', {})
+                    name = author.get('name', '') if isinstance(author, dict) else str(author)
+                    content = p.get('content', '') + p.get('title', '')
+                    if name.lower() == agent_handle.lower() and '⟨' in content:
+                        posts.append(p)
+
         return posts
     except Exception as e:
         print(f"  [WARN] Moltbook fetch failed: {e}")
