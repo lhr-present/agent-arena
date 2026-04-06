@@ -6,6 +6,7 @@ import os
 import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(BASE_DIR, 'engine'))
 STATE_DIR = os.path.join(BASE_DIR, 'state')
 
 TELEGRAM_TOKEN_PATH = os.path.expanduser('~/.config/arena/telegram_token')
@@ -49,6 +50,13 @@ def broadcast_turn(turn_result: dict):
     results = turn_result.get('results', [])
     signals = turn_result.get('signals', {}).get('signals', {})
 
+    # Generate narrative via Claude API (fails silently if key not set)
+    try:
+        import narrator
+        narrative = narrator.generate(turn_result)
+    except Exception:
+        narrative = None
+
     # Build results block
     reads_lines = []
     for r in results:
@@ -59,8 +67,9 @@ def broadcast_turn(turn_result: dict):
         )
     reads_block = '\n'.join(reads_lines) if reads_lines else '  (no actions this turn)'
 
+    regime_shift = new_regime != regime
     regime_note = ''
-    if new_regime != regime:
+    if regime_shift:
         regime_note = f'\n⚡ <b>REGIME SHIFT:</b> {regime} → {new_regime}'
 
     # Load leaderboard top 3
@@ -78,22 +87,33 @@ def broadcast_turn(turn_result: dict):
     volume = signals.get('volume', 0)
     mom_str = f"+{mom:.2f}" if mom >= 0 else f"{mom:.2f}"
 
+    # Regime shift header overrides normal header
+    if regime_shift:
+        header = f"⚡ <b>AGENT ARENA — TURN {turn} — REGIME SHIFT</b>"
+    else:
+        header = f"⚔️ <b>AGENT ARENA — TURN {turn}</b>"
+
+    # Narrative block (italic, set off from data)
+    narrative_block = ''
+    if narrative:
+        narrative_block = f"\n<i>{narrative}</i>\n"
+
     msg = (
-        f"⚔️ <b>AGENT ARENA — TURN {turn}</b>\n"
+        f"{header}\n"
+        f"{narrative_block}"
         f"\n"
-        f"🌍 <b>World Signals (Turn {turn + 1} preview):</b>\n"
+        f"🌍 <b>Signals (Turn {turn + 1}):</b>\n"
         f"  Momentum:   <code>{mom_str}</code>\n"
         f"  Volatility: <code>{vol:.2f}</code>\n"
         f"  Volume:     <code>{volume:.2f}</code>\n"
         f"\n"
-        f"📊 <b>Regime Reads:</b>\n"
+        f"📊 <b>Reads:</b>\n"
         f"{reads_block}"
         f"{regime_note}\n"
         f"\n"
         f"🏆 <b>Leaderboard:</b>\n"
         f"{lb_block}\n"
         f"\n"
-        f"Next turn in ~30 minutes.\n"
         f'<a href="{REPO_URL}">github.com/lhr-present/agent-arena</a>'
     )
 

@@ -107,6 +107,47 @@ def fetch_moltbook_posts(since_turn: int, agent_handle: str) -> list[dict]:
         return []
 
 
+def scan_human_participants(vp_post_ids: list[str]) -> list[dict]:
+    """Scan replies to VOID_PULSE's recent posts for human action tags.
+
+    Anyone who replies with ⟨NAME:REGIME:BULL:0.8:1.0⟩ gets scored.
+    Returns list of {agent, action} dicts for unregistered humans.
+    """
+    found = []
+    try:
+        sys.path.insert(0, os.path.expanduser('~/projects/void_pulse'))
+        from moltbook import MoltbookAPI
+        api = MoltbookAPI()
+
+        for post_id in vp_post_ids[:3]:  # Check last 3 VP posts
+            comments = api.get_comments(post_id, limit=50)
+            if not isinstance(comments, dict):
+                continue
+            for c in comments.get('comments', []):
+                content = c.get('content', '')
+                if '⟨' not in content:
+                    continue
+                m = ACTION_RE.search(content)
+                if not m:
+                    continue
+                agent_name = m.group(1)  # Use the tag they chose as their name
+                # Skip registered agents — they're handled separately
+                found.append({
+                    'agent': agent_name,
+                    'agent_tag': agent_name,
+                    'action': 'REGIME',
+                    'regime_call': m.group(2),
+                    'confidence': min(1.0, float(m.group(3))),
+                    'stake': min(1.0, float(m.group(4))),
+                    'raw': m.group(0),
+                    'human': True,
+                    'author': c.get('author', {}).get('name', '?'),
+                })
+    except Exception as e:
+        print(f"  [WARN] Human scan failed: {e}")
+    return found
+
+
 def parse_action(post_content: str, post_title: str = '') -> dict | None:
     """Extract arena action from post content or title."""
     text = (post_title or '') + ' ' + (post_content or '')
@@ -260,6 +301,27 @@ def process_turn(dry_run: bool = False) -> dict:
                   f"{scored['score_delta']:+d} pts (streak {scored['new_streak']})")
         else:
             print(f"    No action found — skipped")
+
+    # 1b. Score human participants (replies to VP's posts)
+    if not dry_run:
+        vp_post_ids = [p.get('post_id') for p in pending_by_agent.values() if p.get('post_id')]
+        human_actions = scan_human_participants(vp_post_ids)
+        registered_names = set(agents.keys())
+        seen_humans = set()
+        for ha in human_actions:
+            name = ha['agent']
+            if name in registered_names or name in seen_humans:
+                continue
+            seen_humans.add(name)
+            # Give humans a fresh-agent state for scoring
+            human_state = {'streak': 0, 'score': 0}
+            scored = score_action(ha, current_regime, human_state)
+            scored['human'] = True
+            scored['moltbook_author'] = ha.get('author', '?')
+            results.append({'agent': f"@{ha['author']}", **scored})
+            sym = '✅' if scored['correct'] else '❌'
+            print(f"    {sym} HUMAN @{ha['author']}: {scored['regime_call']} vs {current_regime} "
+                  f"→ {scored['score_delta']:+d} pts")
 
     # 2. Advance world state
     import signals_generator
