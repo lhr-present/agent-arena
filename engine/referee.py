@@ -25,6 +25,7 @@ WORLD_PATH = os.path.join(STATE_DIR, 'world.json')
 AGENTS_PATH = os.path.join(STATE_DIR, 'agents.json')
 HISTORY_PATH = os.path.join(STATE_DIR, 'regime_history.json')
 LEADERBOARD_PATH = os.path.join(BASE_DIR, 'LEADERBOARD.md')
+PENDING_PATH = os.path.join(STATE_DIR, 'pending_actions.json')
 
 # Action pattern: ⟨VP:REGIME:BULL:0.72:1.0⟩
 ACTION_RE = re.compile(r'⟨(\w+):REGIME:(BULL|BEAR|CHOP):(\d+\.?\d*):(\d+\.?\d*)⟩')
@@ -206,23 +207,35 @@ def process_turn(dry_run: bool = False) -> dict:
     print(f"  Actual regime: {current_regime}")
     print(f"{'─' * 50}")
 
+    # Load pending actions (posted by agents this turn, saved locally)
+    pending_by_agent = {}
+    try:
+        with open(PENDING_PATH) as f:
+            pending_list = json.load(f)
+        for p in pending_list:
+            pending_by_agent[p['agent']] = p
+    except Exception:
+        pass
+
     # 1. Fetch and score actions from each registered agent
     for agent_name, agent_state in agents.items():
         handle = agent_state.get('moltbook_handle', agent_name.lower())
         print(f"\n  Checking {agent_name} (@{handle})...")
 
-        posts = [] if dry_run else fetch_moltbook_posts(turn, handle)
-        action = None
-
-        for post in posts:
-            content = post.get('content', '') + ' ' + post.get('title', '')
-            action = parse_action(content)
-            if action:
-                print(f"    Found action: {action['raw']}")
-                break
+        # Prefer locally-saved pending action (reliable), fall back to Moltbook scrape
+        action = pending_by_agent.get(agent_name)
+        if action:
+            print(f"    Found pending action: {action['raw']}")
+        else:
+            posts = [] if dry_run else fetch_moltbook_posts(turn, handle)
+            for post in posts:
+                content = post.get('content', '') + ' ' + post.get('title', '')
+                action = parse_action(content)
+                if action:
+                    print(f"    Found action via Moltbook: {action['raw']}")
+                    break
 
         if dry_run and not action:
-            # Inject a fake action for testing
             action = {'agent_tag': agent_name[:2], 'action': 'REGIME',
                       'regime_call': 'BULL', 'confidence': 0.7, 'stake': 1.0,
                       'raw': '⟨TEST:REGIME:BULL:0.7:1.0⟩'}
@@ -280,6 +293,8 @@ def process_turn(dry_run: bool = False) -> dict:
         save_json(WORLD_PATH, world)
         save_json(AGENTS_PATH, agents)
         save_json(HISTORY_PATH, history)
+        # Clear pending actions — consumed this turn
+        save_json(PENDING_PATH, [])
 
         import signals_generator as sg
         sg.update()
