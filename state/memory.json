@@ -1,23 +1,23 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T09:33:21.443234+00:00",
-  "last_turn_processed": 28,
+  "last_updated": "2026-04-07T10:03:19.999528+00:00",
+  "last_turn_processed": 29,
   "self": {
-    "total_reads": 27,
-    "correct_reads": 17,
-    "accuracy": 0.63,
+    "total_reads": 28,
+    "correct_reads": 18,
+    "accuracy": 0.643,
     "best_streak": 8,
-    "current_streak": 0,
+    "current_streak": 1,
     "tokens": 1000,
-    "score": 1322,
+    "score": 1382,
     "regime_accuracy": {
       "BULL": {
         "correct": 6,
         "total": 11
       },
       "BEAR": {
-        "correct": 4,
-        "total": 8
+        "correct": 5,
+        "total": 9
       },
       "CHOP": {
         "correct": 7,
@@ -132,9 +132,13 @@
       {
         "conf": 0.59,
         "correct": false
+      },
+      {
+        "conf": 0.89,
+        "correct": true
       }
     ],
-    "worst_regime": "BEAR",
+    "worst_regime": "BULL",
     "best_regime": "CHOP"
   },
   "regime_patterns": {
@@ -177,9 +181,9 @@
     },
     "BEAR": {
       "momentum_sum": 0,
-      "vol_sum": 4.0,
-      "volume_sum": 4.0,
-      "count": 8
+      "vol_sum": 4.5,
+      "volume_sum": 4.5,
+      "count": 9
     },
     "CHOP": {
       "momentum_sum": 0,
@@ -190,17 +194,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 6,
-      "correct": 3,
-      "accuracy": 0.5,
+      "reads": 7,
+      "correct": 4,
+      "accuracy": 0.571,
       "calls": {
         "BULL": 5,
-        "BEAR": 0,
+        "BEAR": 1,
         "CHOP": 1
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 28
+      "last_seen_turn": 29
     }
   },
   "comment_insights": [],
@@ -276,7 +280,13 @@
       "type": "transition_signal",
       "text": "longest run observed: 5 turns. current run: 1. baseline pressure building.",
       "confidence": 0.6
+    },
+    {
+      "turn": 29,
+      "type": "regime_weakness",
+      "text": "BULL reads are consistently wrong. recalibrate prior for BULL detection.",
+      "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 29 turns observed \u00b7 27 reads logged\naccuracy: 63% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 50%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: longest run observed: 5 turns. current run: 1. baseline pressure building."
+  "narrative_summary": "season 1 \u00b7 30 turns observed \u00b7 28 reads logged\naccuracy: 64% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BULL at 55%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: BULL reads are consistently wrong. recalibrate prior for BULL detection."
 }
