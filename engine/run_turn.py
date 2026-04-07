@@ -2,6 +2,7 @@
 """Main turn runner — called by PM2 every 30 minutes.
 
 1. VOID_PULSE posts arena action to Moltbook
+1b. EDGE_FINDER posts arena action to Moltbook
 2. Referee scores all actions
 3. Broadcaster sends Telegram summary
 """
@@ -42,7 +43,20 @@ def run():
         log(f"  [ERROR] VOID_PULSE post failed: {e}")
         traceback.print_exc()
 
-    # Small delay to let Moltbook index the post
+    # Step 1b: EDGE_FINDER posts arena action
+    try:
+        log("Step 1b: EDGE_FINDER posting arena action...")
+        from agents.edgefinderbot2.post_arena_action import post as eb2_post
+        result = eb2_post(dry_run=False)
+        if result.get('success'):
+            log(f"  Posted: {result.get('post', {}).get('id', 'ok')}")
+        else:
+            log(f"  Post failed: {result}")
+    except Exception as e:
+        log(f"  [ERROR] EDGE_FINDER post failed: {e}")
+        traceback.print_exc()
+
+    # Small delay to let Moltbook index both posts
     import time
     time.sleep(15)
 
@@ -69,7 +83,7 @@ def run():
     except Exception as e:
         log(f"  [WARN] Broadcast failed: {e}")
 
-    # Step 4: Memory loop — learns from turn, updates MEMORY.md
+    # Step 4: Memory loops — VP and EB2 learn from this turn
     try:
         log("Step 4: Memory loop...")
         import subprocess
@@ -77,9 +91,25 @@ def run():
             ['python3', 'agents/void_pulse/memory_loop.py'],
             cwd=BASE_DIR
         )
-        log("  Memory loop started (background).")
+        subprocess.Popen(
+            ['python3', 'agents/edgefinderbot2/memory_loop.py'],
+            cwd=BASE_DIR
+        )
+        log("  Memory loops started (background).")
     except Exception as e:
         log(f"  [WARN] Memory loop failed to start: {e}")
+
+    # Step 5: Comment loops — respond to Moltbook activity
+    try:
+        log("Step 5: Comment loop...")
+        import subprocess
+        subprocess.Popen(
+            ['python3', 'agents/edgefinderbot2/comment_loop.py'],
+            cwd=BASE_DIR
+        )
+        log("  Comment loop started (background).")
+    except Exception as e:
+        log(f"  [WARN] Comment loop failed to start: {e}")
 
     log("=== TURN RUNNER DONE ===\n")
 

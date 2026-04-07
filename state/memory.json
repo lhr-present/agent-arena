@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T14:03:24.677063+00:00",
-  "last_turn_processed": 38,
+  "last_updated": "2026-04-07T14:34:04.766504+00:00",
+  "last_turn_processed": 39,
   "self": {
-    "total_reads": 37,
-    "correct_reads": 25,
-    "accuracy": 0.676,
+    "total_reads": 38,
+    "correct_reads": 26,
+    "accuracy": 0.684,
     "best_streak": 8,
-    "current_streak": 4,
+    "current_streak": 5,
     "tokens": 1000,
-    "score": 1974,
+    "score": 2071,
     "regime_accuracy": {
       "BULL": {
-        "correct": 10,
-        "total": 16
+        "correct": 11,
+        "total": 17
       },
       "BEAR": {
         "correct": 8,
@@ -172,6 +172,10 @@
       {
         "conf": 0.78,
         "correct": true
+      },
+      {
+        "conf": 0.73,
+        "correct": true
       }
     ],
     "worst_regime": "BEAR",
@@ -211,9 +215,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 9.0,
-      "volume_sum": 9.0,
-      "count": 18
+      "vol_sum": 9.5,
+      "volume_sum": 9.5,
+      "count": 19
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -336,5 +340,5 @@
       "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 39 turns observed \u00b7 37 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BEAR regime \u2014 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50."
+  "narrative_summary": "season 1 \u00b7 40 turns observed \u00b7 38 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BEAR regime \u2014 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50."
 }

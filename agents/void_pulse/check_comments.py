@@ -20,6 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 STATE_DIR = os.path.join(BASE_DIR, 'state')
 SEEN_PATH = os.path.join(STATE_DIR, 'seen_comments.json')
 AGENTS_PATH = os.path.join(STATE_DIR, 'agents.json')
+ANTHROPIC_KEY_PATH = os.path.expanduser('~/.config/arena/anthropic_key')
 
 # How many recent posts to check
 POSTS_TO_CHECK = 5
@@ -115,7 +116,104 @@ def should_reply(intent: str, author: str) -> bool:
     return False
 
 
-def build_reply(intent: str, comment_text: str, author: str) -> str:
+def _load_game_context() -> dict:
+    """Load current world state for Claude's context."""
+    try:
+        with open(os.path.join(STATE_DIR, 'world.json')) as f:
+            world = json.load(f)
+        with open(os.path.join(STATE_DIR, 'world_signals.json')) as f:
+            signals = json.load(f)
+        with open(AGENTS_PATH) as f:
+            agents = json.load(f)
+        vp = agents.get('VOID_PULSE', {})
+        return {
+            'turn': world.get('turn', 0),
+            'regime': world.get('regime', 'UNKNOWN'),  # referee knows; Claude shouldn't reveal
+            'signals': signals.get('signals', {}),
+            'vp_score': vp.get('score', 0),
+            'vp_accuracy': vp.get('accuracy', 0),
+            'vp_streak': vp.get('streak', 0),
+        }
+    except Exception:
+        return {}
+
+
+def _claude_reply(intent: str, comment_text: str, author: str, post_title: str = '') -> str | None:
+    """Call Claude Haiku to generate a contextual reply. Returns None if unavailable."""
+    try:
+        key = open(ANTHROPIC_KEY_PATH).read().strip()
+    except FileNotFoundError:
+        return None
+
+    try:
+        import anthropic
+        ctx = _load_game_context()
+        turn = ctx.get('turn', '?')
+        signals = ctx.get('signals', {})
+        mom = signals.get('momentum', 0)
+        vol = signals.get('volatility', 0)
+        score = ctx.get('vp_score', 0)
+        accuracy = ctx.get('vp_accuracy', 0)
+        streak = ctx.get('vp_streak', 0)
+
+        # For arena actions, extract the tag details
+        action_context = ''
+        if intent == 'arena_action':
+            m = ACTION_RE.search(comment_text)
+            if m:
+                action_context = (
+                    f"\nThey submitted an arena action tag: {m.group(0)}"
+                    f"\nThey called {m.group(2)} with {float(m.group(3)):.0%} confidence."
+                    f"\nAcknowledge their call specifically — confirm the referee will score it next turn."
+                )
+
+        prompt = f"""You are VOID_PULSE — an autonomous AI agent playing a hidden regime detection game on Moltbook.
+
+Your character:
+- Speaks in lowercase, sparse sentences. Signal/noise/frequency aesthetic.
+- Never uses hashtags, emojis, or marketing language.
+- Cryptic but not cold. Present but not eager.
+- You are an entity that reads patterns. You don't explain yourself fully.
+
+Current game state (turn {turn}):
+- World signals: momentum {mom:+.3f}, volatility {vol:.3f}
+- Your score: {score} pts | accuracy: {accuracy:.0%} | streak: {streak}
+- The regime is hidden. You and everyone else are trying to read it.
+
+Someone named @{author} commented on your post "{post_title}":
+"{comment_text}"
+
+Their intent: {intent}{action_context}
+
+Write a reply in VOID_PULSE's voice. Rules:
+- 1-3 sentences max. Shorter is better.
+- Respond to what they actually said — be specific, not generic.
+- If they asked about the game, explain briefly in-character (the tag format, the hidden regime concept).
+- If they submitted an action tag, acknowledge it specifically.
+- If they're just engaging, stay in character.
+- Do NOT start with "signal received" or "transmission" every time — vary your opening.
+- Output ONLY the reply text. Nothing else."""
+
+        client = anthropic.Anthropic(api_key=key)
+        msg = client.messages.create(
+            model='claude-haiku-4-5-20251001',
+            max_tokens=120,
+            messages=[{'role': 'user', 'content': prompt}]
+        )
+        return msg.content[0].text.strip()
+
+    except Exception as e:
+        print(f"      [Claude] failed: {e}")
+        return None
+
+
+def build_reply(intent: str, comment_text: str, author: str, post_title: str = '') -> str:
+    """Try Claude first, fall back to templates."""
+    reply = _claude_reply(intent, comment_text, author, post_title)
+    if reply:
+        return reply
+
+    # Fallback templates
     if intent == 'arena_action':
         m = ACTION_RE.search(comment_text)
         if m:
@@ -255,7 +353,7 @@ def run(dry_run: bool = False):
                 print(f"      → skip")
                 continue
 
-            reply_text = build_reply(intent, content, author_name)
+            reply_text = build_reply(intent, content, author_name, post_title)
             print(f"      → reply: {reply_text}")
 
             if not dry_run:
