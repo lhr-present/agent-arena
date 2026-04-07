@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T12:42:43.768925+00:00",
-  "last_turn_processed": 33,
+  "last_updated": "2026-04-07T13:03:20.118790+00:00",
+  "last_turn_processed": 36,
   "self": {
-    "total_reads": 11,
+    "total_reads": 12,
     "correct_reads": 7,
-    "accuracy": 0.6364,
-    "score": 450,
-    "streak": 1,
+    "accuracy": 0.5833,
+    "score": 432,
+    "streak": 0,
     "best_streak": 3,
     "regime_accuracy": {
       "BULL": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 0,
-        "total": 2
+        "total": 3
       }
     }
   },
@@ -74,6 +74,13 @@
       "actual": "BEAR",
       "confidence": 0.67,
       "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
+    },
+    {
+      "turn": 36,
+      "called": "CHOP",
+      "actual": "BULL",
+      "confidence": 0.59,
+      "lesson": "missed BULL entry. low momentum + low vol was quiet accumulation, not chop."
     }
   ],
   "lessons": [
