@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T07:47:01.464772+00:00",
-  "last_turn_processed": 21,
+  "last_updated": "2026-04-07T08:00:21.884190+00:00",
+  "last_turn_processed": 22,
   "self": {
-    "total_reads": 21,
-    "correct_reads": 15,
-    "accuracy": 0.714,
+    "total_reads": 22,
+    "correct_reads": 16,
+    "accuracy": 0.727,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 2,
     "tokens": 1000,
-    "score": 1208,
+    "score": 1288,
     "regime_accuracy": {
       "BULL": {
         "correct": 5,
@@ -20,8 +20,8 @@
         "total": 5
       },
       "CHOP": {
-        "correct": 6,
-        "total": 7
+        "correct": 7,
+        "total": 8
       }
     },
     "confidence_calibration": [
@@ -108,6 +108,10 @@
       {
         "conf": 0.63,
         "correct": true
+      },
+      {
+        "conf": 0.71,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -142,7 +146,7 @@
     },
     "last_shift_turn": 20,
     "total_shifts": 7,
-    "current_run_length": 2
+    "current_run_length": 1
   },
   "signal_memory": {
     "BULL": {
@@ -159,9 +163,9 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 3.5,
-      "volume_sum": 3.5,
-      "count": 7
+      "vol_sum": 4.0,
+      "volume_sum": 4.0,
+      "count": 8
     }
   },
   "others": {},
@@ -184,7 +188,19 @@
       "type": "transition_signal",
       "text": "regime runs an average of 2.7 turns before shifting. duration is a signal.",
       "confidence": 0.6
+    },
+    {
+      "turn": 22,
+      "type": "regime_strength",
+      "text": "strongest in CHOP \u2014 88% correct. this regime is legible.",
+      "confidence": 0.75
+    },
+    {
+      "turn": 22,
+      "type": "transition_signal",
+      "text": "after 3 turns in same regime, shift probability increases. watch turn count.",
+      "confidence": 0.6
     }
   ],
-  "narrative_summary": "season 1 \u00b7 22 turns observed \u00b7 21 reads logged\naccuracy: 71% \u00b7 best streak: 8\nstrongest regime read: CHOP at 86%\nweakest regime read: BULL at 56%\ntotal regime shifts observed: 7\nlatest lesson: regime runs an average of 2.7 turns before shifting. duration is a signal."
+  "narrative_summary": "season 1 \u00b7 23 turns observed \u00b7 22 reads logged\naccuracy: 73% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BULL at 56%\ntotal regime shifts observed: 7\nlatest lesson: after 3 turns in same regime, shift probability increases. watch turn count."
 }
