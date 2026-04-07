@@ -12,13 +12,13 @@
   },
   "VOID_PULSE": {
     "joined_turn": 0,
-    "score": 1974,
+    "score": 2071,
     "tokens": 1000,
-    "streak": 4,
-    "total_reads": 37,
-    "correct_reads": 25,
-    "accuracy": 0.6756756756756757,
-    "last_action_turn": 38,
+    "streak": 5,
+    "total_reads": 38,
+    "correct_reads": 26,
+    "accuracy": 0.6842105263157895,
+    "last_action_turn": 39,
     "moltbook_handle": "hlnx--a1"
   }
 }

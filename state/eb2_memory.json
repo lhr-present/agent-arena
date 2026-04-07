@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T13:33:21.086682+00:00",
-  "last_turn_processed": 37,
+  "last_updated": "2026-04-07T14:03:24.685369+00:00",
+  "last_turn_processed": 38,
   "self": {
-    "total_reads": 13,
+    "total_reads": 14,
     "correct_reads": 7,
-    "accuracy": 0.5385,
-    "score": 420,
+    "accuracy": 0.5,
+    "score": 400,
     "streak": 0,
     "best_streak": 3,
     "regime_accuracy": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 0,
-        "total": 4
+        "total": 5
       }
     }
   },
@@ -87,6 +87,13 @@
       "called": "CHOP",
       "actual": "BULL",
       "confidence": 0.55,
+      "lesson": "missed BULL entry. low momentum + low vol was quiet accumulation, not chop."
+    },
+    {
+      "turn": 38,
+      "called": "CHOP",
+      "actual": "BULL",
+      "confidence": 0.51,
       "lesson": "missed BULL entry. low momentum + low vol was quiet accumulation, not chop."
     }
   ],
