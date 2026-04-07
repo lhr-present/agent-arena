@@ -1,0 +1,190 @@
+{
+  "version": 2,
+  "last_updated": "2026-04-07T07:47:01.464772+00:00",
+  "last_turn_processed": 21,
+  "self": {
+    "total_reads": 21,
+    "correct_reads": 15,
+    "accuracy": 0.714,
+    "best_streak": 8,
+    "current_streak": 1,
+    "tokens": 1000,
+    "score": 1208,
+    "regime_accuracy": {
+      "BULL": {
+        "correct": 5,
+        "total": 9
+      },
+      "BEAR": {
+        "correct": 4,
+        "total": 5
+      },
+      "CHOP": {
+        "correct": 6,
+        "total": 7
+      }
+    },
+    "confidence_calibration": [
+      {
+        "conf": 0.83,
+        "correct": true
+      },
+      {
+        "conf": 0.73,
+        "correct": true
+      },
+      {
+        "conf": 0.9,
+        "correct": true
+      },
+      {
+        "conf": 0.89,
+        "correct": true
+      },
+      {
+        "conf": 0.69,
+        "correct": true
+      },
+      {
+        "conf": 0.58,
+        "correct": true
+      },
+      {
+        "conf": 0.7,
+        "correct": true
+      },
+      {
+        "conf": 0.81,
+        "correct": true
+      },
+      {
+        "conf": 0.59,
+        "correct": false
+      },
+      {
+        "conf": 0.53,
+        "correct": true
+      },
+      {
+        "conf": 0.53,
+        "correct": true
+      },
+      {
+        "conf": 0.59,
+        "correct": true
+      },
+      {
+        "conf": 0.68,
+        "correct": false
+      },
+      {
+        "conf": 0.58,
+        "correct": false
+      },
+      {
+        "conf": 0.66,
+        "correct": false
+      },
+      {
+        "conf": 0.77,
+        "correct": true
+      },
+      {
+        "conf": 0.95,
+        "correct": true
+      },
+      {
+        "conf": 0.95,
+        "correct": true
+      },
+      {
+        "conf": 0.7,
+        "correct": false
+      },
+      {
+        "conf": 0.49,
+        "correct": false
+      },
+      {
+        "conf": 0.63,
+        "correct": true
+      }
+    ],
+    "worst_regime": "BULL",
+    "best_regime": "CHOP"
+  },
+  "regime_patterns": {
+    "transition_counts": {
+      "BULL\u2192BEAR": 1,
+      "BULL\u2192CHOP": 2,
+      "BULL\u2192BULL": 0,
+      "BEAR\u2192BULL": 2,
+      "BEAR\u2192CHOP": 0,
+      "BEAR\u2192BEAR": 0,
+      "CHOP\u2192BULL": 1,
+      "CHOP\u2192BEAR": 1,
+      "CHOP\u2192CHOP": 0
+    },
+    "avg_regime_duration": {
+      "BULL": [
+        5,
+        1,
+        2
+      ],
+      "BEAR": [
+        1,
+        4
+      ],
+      "CHOP": [
+        3,
+        4
+      ]
+    },
+    "last_shift_turn": 20,
+    "total_shifts": 7,
+    "current_run_length": 2
+  },
+  "signal_memory": {
+    "BULL": {
+      "momentum_sum": 0,
+      "vol_sum": 5.0,
+      "volume_sum": 5.0,
+      "count": 10
+    },
+    "BEAR": {
+      "momentum_sum": 0,
+      "vol_sum": 2.5,
+      "volume_sum": 2.5,
+      "count": 5
+    },
+    "CHOP": {
+      "momentum_sum": 0,
+      "vol_sum": 3.5,
+      "volume_sum": 3.5,
+      "count": 7
+    }
+  },
+  "others": {},
+  "comment_insights": [],
+  "lessons": [
+    {
+      "turn": 21,
+      "type": "regime_weakness",
+      "text": "struggled most in BULL regime \u2014 56% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50.",
+      "confidence": 0.8
+    },
+    {
+      "turn": 21,
+      "type": "regime_strength",
+      "text": "strongest in CHOP \u2014 86% correct. this regime is legible.",
+      "confidence": 0.75
+    },
+    {
+      "turn": 21,
+      "type": "transition_signal",
+      "text": "regime runs an average of 2.7 turns before shifting. duration is a signal.",
+      "confidence": 0.6
+    }
+  ],
+  "narrative_summary": "season 1 \u00b7 22 turns observed \u00b7 21 reads logged\naccuracy: 71% \u00b7 best streak: 8\nstrongest regime read: CHOP at 86%\nweakest regime read: BULL at 56%\ntotal regime shifts observed: 7\nlatest lesson: regime runs an average of 2.7 turns before shifting. duration is a signal."
+}

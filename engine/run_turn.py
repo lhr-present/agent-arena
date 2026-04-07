@@ -69,6 +69,18 @@ def run():
     except Exception as e:
         log(f"  [WARN] Broadcast failed: {e}")
 
+    # Step 4: Memory loop — learns from turn, updates MEMORY.md
+    try:
+        log("Step 4: Memory loop...")
+        import subprocess
+        subprocess.Popen(
+            ['python3', 'agents/void_pulse/memory_loop.py'],
+            cwd=BASE_DIR
+        )
+        log("  Memory loop started (background).")
+    except Exception as e:
+        log(f"  [WARN] Memory loop failed to start: {e}")
+
     log("=== TURN RUNNER DONE ===\n")
 
 
