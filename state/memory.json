@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T17:03:26.166584+00:00",
-  "last_turn_processed": 44,
+  "last_updated": "2026-04-07T17:36:35.393647+00:00",
+  "last_turn_processed": 45,
   "self": {
     "total_reads": 43,
     "correct_reads": 30,
@@ -241,9 +241,9 @@
     },
     "BEAR": {
       "momentum_sum": 0,
-      "vol_sum": 8.5,
-      "volume_sum": 8.5,
-      "count": 17
+      "vol_sum": 9.0,
+      "volume_sum": 9.0,
+      "count": 18
     },
     "CHOP": {
       "momentum_sum": 0,
@@ -254,17 +254,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 18,
-      "correct": 10,
-      "accuracy": 0.556,
+      "reads": 19,
+      "correct": 11,
+      "accuracy": 0.579,
       "calls": {
         "BULL": 5,
-        "BEAR": 7,
+        "BEAR": 8,
         "CHOP": 6
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 44
+      "last_seen_turn": 45
     }
   },
   "comment_insights": [],
@@ -378,5 +378,5 @@
       "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 45 turns observed \u00b7 43 reads logged\naccuracy: 70% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BEAR is only 65% over 17 reads. the pattern is not yet clear."
+  "narrative_summary": "season 1 \u00b7 46 turns observed \u00b7 43 reads logged\naccuracy: 70% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BEAR is only 65% over 17 reads. the pattern is not yet clear."
 }
