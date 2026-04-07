@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T19:03:20.214617+00:00",
-  "last_turn_processed": 48,
+  "last_updated": "2026-04-07T19:33:20.884932+00:00",
+  "last_turn_processed": 49,
   "self": {
-    "total_reads": 46,
+    "total_reads": 47,
     "correct_reads": 32,
-    "accuracy": 0.696,
+    "accuracy": 0.681,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 0,
     "tokens": 1000,
-    "score": 2540,
+    "score": 2524,
     "regime_accuracy": {
       "BULL": {
         "correct": 13,
-        "total": 20
+        "total": 21
       },
       "BEAR": {
         "correct": 11,
@@ -208,9 +208,13 @@
       {
         "conf": 0.7,
         "correct": true
+      },
+      {
+        "conf": 0.46,
+        "correct": false
       }
     ],
-    "worst_regime": "BEAR",
+    "worst_regime": "BULL",
     "best_regime": "CHOP"
   },
   "regime_patterns": {
@@ -247,9 +251,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 11.0,
-      "volume_sum": 11.0,
-      "count": 22
+      "vol_sum": 11.5,
+      "volume_sum": 11.5,
+      "count": 23
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -266,17 +270,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 22,
-      "correct": 13,
-      "accuracy": 0.591,
+      "reads": 23,
+      "correct": 14,
+      "accuracy": 0.609,
       "calls": {
-        "BULL": 8,
+        "BULL": 9,
         "BEAR": 8,
         "CHOP": 6
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 48
+      "last_seen_turn": 49
     }
   },
   "comment_insights": [],
@@ -418,7 +422,13 @@
       "type": "regime_strength",
       "text": "CHOP reads are solid at 89% over 9 turns. the signal is readable.",
       "confidence": 0.75
+    },
+    {
+      "turn": 49,
+      "type": "regime_weakness",
+      "text": "struggled most in BULL regime \u2014 62% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50.",
+      "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 49 turns observed \u00b7 46 reads logged\naccuracy: 70% \u00b7 best streak: 8\nstrongest regime read: CHOP at 89%\nweakest regime read: BEAR at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 89% over 9 turns. the signal is readable."
+  "narrative_summary": "season 1 \u00b7 50 turns observed \u00b7 47 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 89%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BULL regime \u2014 62% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50."
 }
