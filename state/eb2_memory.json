@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T09:03:21.105911+00:00",
-  "last_turn_processed": 27,
+  "last_updated": "2026-04-07T09:33:21.439426+00:00",
+  "last_turn_processed": 28,
   "self": {
-    "total_reads": 5,
+    "total_reads": 6,
     "correct_reads": 3,
-    "accuracy": 0.6,
-    "score": 183,
+    "accuracy": 0.5,
+    "score": 165,
     "streak": 0,
     "best_streak": 3,
     "regime_accuracy": {
       "BULL": {
         "correct": 3,
-        "total": 4
+        "total": 5
       },
       "BEAR": {
         "correct": 0,
@@ -32,7 +32,14 @@
     "CHOP_correct": [],
     "CHOP_wrong": []
   },
-  "weight_adjustments": [],
+  "weight_adjustments": [
+    {
+      "type": "threshold_shift",
+      "regime": "BEAR",
+      "delta": 0.06,
+      "reason": "2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR"
+    }
+  ],
   "mistakes": [
     {
       "turn": 26,
@@ -47,6 +54,13 @@
       "actual": "BEAR",
       "confidence": 0.43,
       "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
+    },
+    {
+      "turn": 28,
+      "called": "BULL",
+      "actual": "BEAR",
+      "confidence": 0.36,
+      "lesson": "overshot \u2014 high momentum with rising vol was actually BEAR. fade harder."
     }
   ],
   "lessons": [
