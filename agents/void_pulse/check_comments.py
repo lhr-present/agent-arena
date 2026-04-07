@@ -20,7 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 STATE_DIR = os.path.join(BASE_DIR, 'state')
 SEEN_PATH = os.path.join(STATE_DIR, 'seen_comments.json')
 AGENTS_PATH = os.path.join(STATE_DIR, 'agents.json')
-ANTHROPIC_KEY_PATH = os.path.expanduser('~/.config/arena/anthropic_key')
 
 # How many recent posts to check
 POSTS_TO_CHECK = 5
@@ -139,41 +138,31 @@ def _load_game_context() -> dict:
 
 
 def _claude_reply(intent: str, comment_text: str, author: str, post_title: str = '') -> str | None:
-    """Call Claude Haiku to generate a contextual reply. Returns None if unavailable."""
-    try:
-        key = open(ANTHROPIC_KEY_PATH).read().strip()
-    except FileNotFoundError:
-        return None
+    """Generate a contextual reply using the claude CLI subprocess. Zero API cost."""
+    import subprocess
 
-    try:
-        import anthropic
-        ctx = _load_game_context()
-        turn = ctx.get('turn', '?')
-        signals = ctx.get('signals', {})
-        mom = signals.get('momentum', 0)
-        vol = signals.get('volatility', 0)
-        score = ctx.get('vp_score', 0)
-        accuracy = ctx.get('vp_accuracy', 0)
-        streak = ctx.get('vp_streak', 0)
+    ctx = _load_game_context()
+    turn = ctx.get('turn', '?')
+    signals = ctx.get('signals', {})
+    mom = signals.get('momentum', 0)
+    vol = signals.get('volatility', 0)
+    score = ctx.get('vp_score', 0)
+    accuracy = ctx.get('vp_accuracy', 0)
+    streak = ctx.get('vp_streak', 0)
 
-        # For arena actions, extract the tag details
-        action_context = ''
-        if intent == 'arena_action':
-            m = ACTION_RE.search(comment_text)
-            if m:
-                action_context = (
-                    f"\nThey submitted an arena action tag: {m.group(0)}"
-                    f"\nThey called {m.group(2)} with {float(m.group(3)):.0%} confidence."
-                    f"\nAcknowledge their call specifically — confirm the referee will score it next turn."
-                )
+    action_context = ''
+    if intent == 'arena_action':
+        m = ACTION_RE.search(comment_text)
+        if m:
+            action_context = (
+                f"\nThey submitted an arena action tag: {m.group(0)}"
+                f"\nThey called {m.group(2)} with {float(m.group(3)):.0%} confidence."
+                f"\nAcknowledge their call specifically — confirm the referee will score it next turn."
+            )
 
-        prompt = f"""You are VOID_PULSE — an autonomous AI agent playing a hidden regime detection game on Moltbook.
+    prompt = f"""You are VOID_PULSE — an autonomous AI agent playing a hidden regime detection game on Moltbook.
 
-Your character:
-- Speaks in lowercase, sparse sentences. Signal/noise/frequency aesthetic.
-- Never uses hashtags, emojis, or marketing language.
-- Cryptic but not cold. Present but not eager.
-- You are an entity that reads patterns. You don't explain yourself fully.
+Your character: speaks in lowercase, sparse sentences. Signal/noise/frequency aesthetic. Never uses hashtags, emojis, or marketing language. Cryptic but not cold. Present but not eager.
 
 Current game state (turn {turn}):
 - World signals: momentum {mom:+.3f}, volatility {vol:.3f}
@@ -188,22 +177,22 @@ Their intent: {intent}{action_context}
 Write a reply in VOID_PULSE's voice. Rules:
 - 1-3 sentences max. Shorter is better.
 - Respond to what they actually said — be specific, not generic.
-- If they asked about the game, explain briefly in-character (the tag format, the hidden regime concept).
-- If they submitted an action tag, acknowledge it specifically.
-- If they're just engaging, stay in character.
-- Do NOT start with "signal received" or "transmission" every time — vary your opening.
+- If they asked about the game: explain in-character (post ⟨NAME:REGIME:BULL:0.8:1.0⟩ as a reply, referee scores it next turn).
+- If they submitted an action tag, acknowledge their specific call.
+- Do NOT start with "signal received" or "transmission" every time.
 - Output ONLY the reply text. Nothing else."""
 
-        client = anthropic.Anthropic(api_key=key)
-        msg = client.messages.create(
-            model='claude-haiku-4-5-20251001',
-            max_tokens=120,
-            messages=[{'role': 'user', 'content': prompt}]
+    try:
+        result = subprocess.run(
+            ['claude', '-p', prompt],
+            capture_output=True, text=True, timeout=30
         )
-        return msg.content[0].text.strip()
-
+        reply = result.stdout.strip()
+        if reply and len(reply) > 5:
+            return reply
+        return None
     except Exception as e:
-        print(f"      [Claude] failed: {e}")
+        print(f"      [claude CLI] failed: {e}")
         return None
 
 
