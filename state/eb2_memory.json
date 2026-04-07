@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T21:03:26.928048+00:00",
-  "last_turn_processed": 52,
+  "last_updated": "2026-04-07T21:33:21.411281+00:00",
+  "last_turn_processed": 53,
   "self": {
-    "total_reads": 26,
-    "correct_reads": 14,
-    "accuracy": 0.5385,
-    "score": 845,
-    "streak": 0,
+    "total_reads": 27,
+    "correct_reads": 15,
+    "accuracy": 0.5556,
+    "score": 921,
+    "streak": 1,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
-        "correct": 6,
-        "total": 11
+        "correct": 7,
+        "total": 12
       },
       "BEAR": {
         "correct": 8,
