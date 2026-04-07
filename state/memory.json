@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T13:03:20.121638+00:00",
-  "last_turn_processed": 36,
+  "last_updated": "2026-04-07T13:33:21.088874+00:00",
+  "last_turn_processed": 37,
   "self": {
-    "total_reads": 35,
-    "correct_reads": 23,
-    "accuracy": 0.657,
+    "total_reads": 36,
+    "correct_reads": 24,
+    "accuracy": 0.667,
     "best_streak": 8,
-    "current_streak": 2,
+    "current_streak": 3,
     "tokens": 1000,
-    "score": 1771,
+    "score": 1872,
     "regime_accuracy": {
       "BULL": {
-        "correct": 8,
-        "total": 14
+        "correct": 9,
+        "total": 15
       },
       "BEAR": {
         "correct": 8,
@@ -164,6 +164,10 @@
       {
         "conf": 0.95,
         "correct": true
+      },
+      {
+        "conf": 0.85,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -203,9 +207,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 8.0,
-      "volume_sum": 8.0,
-      "count": 16
+      "vol_sum": 8.5,
+      "volume_sum": 8.5,
+      "count": 17
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -222,17 +226,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 12,
+      "reads": 13,
       "correct": 7,
-      "accuracy": 0.583,
+      "accuracy": 0.538,
       "calls": {
         "BULL": 5,
         "BEAR": 4,
-        "CHOP": 3
+        "CHOP": 4
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 36
+      "last_seen_turn": 37
     }
   },
   "comment_insights": [],
@@ -322,5 +326,5 @@
       "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 37 turns observed \u00b7 35 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BULL at 57%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BULL is only 50% over 12 reads. the pattern is not yet clear."
+  "narrative_summary": "season 1 \u00b7 38 turns observed \u00b7 36 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BULL at 60%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BULL is only 50% over 12 reads. the pattern is not yet clear."
 }
