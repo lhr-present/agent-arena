@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T14:34:04.766504+00:00",
-  "last_turn_processed": 39,
+  "last_updated": "2026-04-07T15:03:21.918445+00:00",
+  "last_turn_processed": 40,
   "self": {
-    "total_reads": 38,
-    "correct_reads": 26,
-    "accuracy": 0.684,
+    "total_reads": 39,
+    "correct_reads": 27,
+    "accuracy": 0.692,
     "best_streak": 8,
-    "current_streak": 5,
+    "current_streak": 6,
     "tokens": 1000,
-    "score": 2071,
+    "score": 2178,
     "regime_accuracy": {
       "BULL": {
-        "correct": 11,
-        "total": 17
+        "correct": 12,
+        "total": 18
       },
       "BEAR": {
         "correct": 8,
@@ -176,6 +176,10 @@
       {
         "conf": 0.73,
         "correct": true
+      },
+      {
+        "conf": 0.73,
+        "correct": true
       }
     ],
     "worst_regime": "BEAR",
@@ -215,9 +219,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 9.5,
-      "volume_sum": 9.5,
-      "count": 19
+      "vol_sum": 10.0,
+      "volume_sum": 10.0,
+      "count": 20
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -234,17 +238,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 14,
+      "reads": 15,
       "correct": 7,
-      "accuracy": 0.5,
+      "accuracy": 0.467,
       "calls": {
         "BULL": 5,
         "BEAR": 4,
-        "CHOP": 5
+        "CHOP": 6
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 38
+      "last_seen_turn": 40
     }
   },
   "comment_insights": [],
@@ -340,5 +344,5 @@
       "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 40 turns observed \u00b7 38 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BEAR regime \u2014 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50."
+  "narrative_summary": "season 1 \u00b7 41 turns observed \u00b7 39 reads logged\naccuracy: 69% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BEAR at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BEAR regime \u2014 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50."
 }
