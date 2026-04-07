@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T19:33:20.880404+00:00",
-  "last_turn_processed": 49,
+  "last_updated": "2026-04-07T20:03:25.195208+00:00",
+  "last_turn_processed": 50,
   "self": {
-    "total_reads": 23,
+    "total_reads": 24,
     "correct_reads": 14,
-    "accuracy": 0.6087,
-    "score": 893,
-    "streak": 3,
+    "accuracy": 0.5833,
+    "score": 877,
+    "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 0,
-        "total": 6
+        "total": 7
       }
     }
   },
@@ -109,6 +109,13 @@
       "actual": "CHOP",
       "confidence": 0.57,
       "lesson": "BULL call in low-signal environment. when unsure, default CHOP."
+    },
+    {
+      "turn": 50,
+      "called": "CHOP",
+      "actual": "BULL",
+      "confidence": 0.52,
+      "lesson": "missed BULL entry. low momentum + low vol was quiet accumulation, not chop."
     }
   ],
   "lessons": [
