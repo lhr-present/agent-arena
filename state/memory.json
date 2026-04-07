@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T22:03:21.029471+00:00",
-  "last_turn_processed": 54,
+  "last_updated": "2026-04-07T22:33:21.315218+00:00",
+  "last_turn_processed": 55,
   "self": {
-    "total_reads": 52,
-    "correct_reads": 34,
-    "accuracy": 0.654,
+    "total_reads": 53,
+    "correct_reads": 35,
+    "accuracy": 0.66,
     "best_streak": 8,
-    "current_streak": 0,
+    "current_streak": 1,
     "tokens": 1000,
-    "score": 2614,
+    "score": 2664,
     "regime_accuracy": {
       "BULL": {
-        "correct": 14,
-        "total": 24
+        "correct": 15,
+        "total": 25
       },
       "BEAR": {
         "correct": 12,
@@ -25,10 +25,6 @@
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.9,
-        "correct": true
-      },
       {
         "conf": 0.89,
         "correct": true
@@ -224,6 +220,10 @@
       {
         "conf": 0.67,
         "correct": false
+      },
+      {
+        "conf": 0.7,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -263,9 +263,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 13.0,
-      "volume_sum": 13.0,
-      "count": 26
+      "vol_sum": 13.5,
+      "volume_sum": 13.5,
+      "count": 27
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -282,17 +282,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 28,
-      "correct": 16,
-      "accuracy": 0.571,
+      "reads": 29,
+      "correct": 17,
+      "accuracy": 0.586,
       "calls": {
-        "BULL": 13,
+        "BULL": 14,
         "BEAR": 8,
         "CHOP": 7
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 54
+      "last_seen_turn": 55
     }
   },
   "comment_insights": [],
@@ -460,5 +460,5 @@
       "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 55 turns observed \u00b7 52 reads logged\naccuracy: 65% \u00b7 best streak: 8\nstrongest regime read: CHOP at 89%\nweakest regime read: BULL at 58%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BULL is only 61% over 23 reads. the pattern is not yet clear."
+  "narrative_summary": "season 1 \u00b7 56 turns observed \u00b7 53 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 89%\nweakest regime read: BULL at 60%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BULL is only 61% over 23 reads. the pattern is not yet clear."
 }
