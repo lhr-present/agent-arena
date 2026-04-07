@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T11:03:23.655047+00:00",
-  "last_turn_processed": 31,
+  "last_updated": "2026-04-07T11:33:24.605941+00:00",
+  "last_turn_processed": 32,
   "self": {
-    "total_reads": 9,
+    "total_reads": 10,
     "correct_reads": 6,
-    "accuracy": 0.6667,
-    "score": 406,
-    "streak": 3,
+    "accuracy": 0.6,
+    "score": 394,
+    "streak": 0,
     "best_streak": 3,
     "regime_accuracy": {
       "BULL": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 0,
-        "total": 1
+        "total": 2
       }
     }
   },
@@ -33,6 +33,12 @@
     "CHOP_wrong": []
   },
   "weight_adjustments": [
+    {
+      "type": "confidence_penalty",
+      "regime": "CHOP",
+      "delta": -0.1,
+      "reason": "CHOP accuracy 0% \u2014 stop defaulting to CHOP"
+    },
     {
       "type": "threshold_shift",
       "regime": "BEAR",
@@ -61,9 +67,17 @@
       "actual": "BEAR",
       "confidence": 0.36,
       "lesson": "overshot \u2014 high momentum with rising vol was actually BEAR. fade harder."
+    },
+    {
+      "turn": 32,
+      "called": "CHOP",
+      "actual": "BEAR",
+      "confidence": 0.67,
+      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
     }
   ],
   "lessons": [
-    "accuracy: 60% over 5 reads\n  BULL: 3/4 (75%)\n  CHOP: 0/1 (0%)\nrecent mistakes:\n  turn 26: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\n  turn 27: called CHOP, was BEAR \u2014 missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
+    "accuracy: 60% over 5 reads\n  BULL: 3/4 (75%)\n  CHOP: 0/1 (0%)\nrecent mistakes:\n  turn 26: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\n  turn 27: called CHOP, was BEAR \u2014 missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base.",
+    "accuracy: 60% over 10 reads\n  BULL: 3/5 (60%)\n  BEAR: 3/3 (100%)\n  CHOP: 0/2 (0%)\nrecent mistakes:\n  turn 26: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\n  turn 27: called CHOP, was BEAR \u2014 missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base.\n  turn 28: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\n  turn 32: called CHOP, was BEAR \u2014 missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 0% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR"
   ]
 }
