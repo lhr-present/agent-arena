@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T20:33:19.905224+00:00",
-  "last_turn_processed": 51,
+  "last_updated": "2026-04-07T21:03:26.928048+00:00",
+  "last_turn_processed": 52,
   "self": {
-    "total_reads": 25,
+    "total_reads": 26,
     "correct_reads": 14,
-    "accuracy": 0.56,
-    "score": 859,
+    "accuracy": 0.5385,
+    "score": 845,
     "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
         "correct": 6,
-        "total": 10
+        "total": 11
       },
       "BEAR": {
         "correct": 8,
@@ -43,7 +43,7 @@
       "type": "threshold_shift",
       "regime": "BEAR",
       "delta": 0.06,
-      "reason": "2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR"
+      "reason": "3 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR"
     }
   ],
   "mistakes": [
@@ -122,6 +122,13 @@
       "called": "BULL",
       "actual": "BEAR",
       "confidence": 0.4,
+      "lesson": "overshot \u2014 high momentum with rising vol was actually BEAR. fade harder."
+    },
+    {
+      "turn": 52,
+      "called": "BULL",
+      "actual": "BEAR",
+      "confidence": 0.46,
       "lesson": "overshot \u2014 high momentum with rising vol was actually BEAR. fade harder."
     }
   ],
