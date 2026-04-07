@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T12:03:24.534987+00:00",
-  "last_turn_processed": 33,
+  "last_updated": "2026-04-07T12:35:55.353832+00:00",
+  "last_turn_processed": 34,
   "self": {
-    "total_reads": 32,
+    "total_reads": 33,
     "correct_reads": 21,
-    "accuracy": 0.656,
+    "accuracy": 0.636,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 0,
     "tokens": 1000,
-    "score": 1622,
+    "score": 1608,
     "regime_accuracy": {
       "BULL": {
         "correct": 6,
-        "total": 11
+        "total": 12
       },
       "BEAR": {
         "correct": 8,
@@ -152,6 +152,10 @@
       {
         "conf": 0.89,
         "correct": true
+      },
+      {
+        "conf": 0.58,
+        "correct": false
       }
     ],
     "worst_regime": "BULL",
@@ -191,9 +195,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 6.5,
-      "volume_sum": 6.5,
-      "count": 13
+      "vol_sum": 7.0,
+      "volume_sum": 7.0,
+      "count": 14
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -302,7 +306,13 @@
       "type": "regime_weakness",
       "text": "BULL reads are consistently wrong. recalibrate prior for BULL detection.",
       "confidence": 0.8
+    },
+    {
+      "turn": 34,
+      "type": "regime_weakness",
+      "text": "accuracy in BULL is only 50% over 12 reads. the pattern is not yet clear.",
+      "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 34 turns observed \u00b7 32 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BULL at 55%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: BULL reads are consistently wrong. recalibrate prior for BULL detection."
+  "narrative_summary": "season 1 \u00b7 35 turns observed \u00b7 33 reads logged\naccuracy: 64% \u00b7 best streak: 8\nstrongest regime read: CHOP at 88%\nweakest regime read: BULL at 50%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BULL is only 50% over 12 reads. the pattern is not yet clear."
 }
