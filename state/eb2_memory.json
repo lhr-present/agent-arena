@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T22:33:21.312080+00:00",
-  "last_turn_processed": 55,
+  "last_updated": "2026-04-07T23:03:23.484333+00:00",
+  "last_turn_processed": 56,
   "self": {
-    "total_reads": 29,
-    "correct_reads": 17,
-    "accuracy": 0.5862,
-    "score": 1071,
-    "streak": 3,
+    "total_reads": 30,
+    "correct_reads": 18,
+    "accuracy": 0.6,
+    "score": 1151,
+    "streak": 4,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
@@ -19,8 +19,8 @@
         "total": 8
       },
       "CHOP": {
-        "correct": 0,
-        "total": 7
+        "correct": 1,
+        "total": 8
       }
     }
   },
@@ -37,7 +37,7 @@
       "type": "confidence_penalty",
       "regime": "CHOP",
       "delta": -0.1,
-      "reason": "CHOP accuracy 0% \u2014 stop defaulting to CHOP"
+      "reason": "CHOP accuracy 12% \u2014 stop defaulting to CHOP"
     },
     {
       "type": "threshold_shift",
@@ -138,6 +138,7 @@
     "accuracy: 47% over 15 reads\n  BULL: 3/5 (60%)\n  BEAR: 4/4 (100%)\n  CHOP: 0/6 (0%)\nrecent mistakes:\n  turn 32: called CHOP, was BEAR \u2014 missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base.\n  turn 36: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 37: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 38: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 40: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 0% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR",
     "accuracy: 47% over 15 reads\n  BULL: 3/5 (60%)\n  BEAR: 4/4 (100%)\n  CHOP: 0/6 (0%)\nrecent mistakes:\n  turn 32: called CHOP, was BEAR \u2014 missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base.\n  turn 36: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 37: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 38: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 40: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 0% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR",
     "accuracy: 55% over 20 reads\n  BULL: 3/6 (50%)\n  BEAR: 8/8 (100%)\n  CHOP: 0/6 (0%)\nrecent mistakes:\n  turn 36: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 37: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 38: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 40: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 46: called BULL, was CHOP \u2014 BULL call in low-signal environment. when unsure, default CHOP.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 0% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR",
-    "accuracy: 56% over 25 reads\n  BULL: 6/10 (60%)\n  BEAR: 8/8 (100%)\n  CHOP: 0/7 (0%)\nrecent mistakes:\n  turn 38: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 40: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 46: called BULL, was CHOP \u2014 BULL call in low-signal environment. when unsure, default CHOP.\n  turn 50: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 51: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 0% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR"
+    "accuracy: 56% over 25 reads\n  BULL: 6/10 (60%)\n  BEAR: 8/8 (100%)\n  CHOP: 0/7 (0%)\nrecent mistakes:\n  turn 38: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 40: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 46: called BULL, was CHOP \u2014 BULL call in low-signal environment. when unsure, default CHOP.\n  turn 50: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 51: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 0% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 2 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR",
+    "accuracy: 60% over 30 reads\n  BULL: 9/14 (64%)\n  BEAR: 8/8 (100%)\n  CHOP: 1/8 (12%)\nrecent mistakes:\n  turn 40: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 46: called BULL, was CHOP \u2014 BULL call in low-signal environment. when unsure, default CHOP.\n  turn 50: called CHOP, was BULL \u2014 missed BULL entry. low momentum + low vol was quiet accumulation, not chop.\n  turn 51: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\n  turn 52: called BULL, was BEAR \u2014 overshot \u2014 high momentum with rising vol was actually BEAR. fade harder.\nactive adjustments:\n  [confidence_penalty] CHOP -0.10: CHOP accuracy 12% \u2014 stop defaulting to CHOP\n  [threshold_shift] BEAR +0.06: 3 recent BULL\u2192BEAR mistakes \u2014 be quicker to call BEAR"
   ]
 }
