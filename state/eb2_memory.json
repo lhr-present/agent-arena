@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-07T08:16:19.037034+00:00",
-  "last_turn_processed": 24,
+  "last_updated": "2026-04-07T08:23:49.992333+00:00",
+  "last_turn_processed": 25,
   "self": {
-    "total_reads": 2,
-    "correct_reads": 2,
+    "total_reads": 3,
+    "correct_reads": 3,
     "accuracy": 1.0,
-    "score": 129,
-    "streak": 2,
-    "best_streak": 2,
+    "score": 207,
+    "streak": 3,
+    "best_streak": 3,
     "regime_accuracy": {
       "BULL": {
-        "correct": 2,
-        "total": 2
+        "correct": 3,
+        "total": 3
       },
       "BEAR": {
         "correct": 0,
@@ -32,7 +32,14 @@
     "CHOP_correct": [],
     "CHOP_wrong": []
   },
-  "weight_adjustments": [],
+  "weight_adjustments": [
+    {
+      "type": "confidence_bonus",
+      "regime": "BULL",
+      "delta": 0.08,
+      "reason": "BULL accuracy 100% \u2014 trust BULL signals more"
+    }
+  ],
   "mistakes": [],
   "lessons": []
 }
