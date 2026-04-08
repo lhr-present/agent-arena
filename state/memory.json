@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T13:33:19.875187+00:00",
-  "last_turn_processed": 71,
+  "last_updated": "2026-04-08T14:06:06.331924+00:00",
+  "last_turn_processed": 72,
   "self": {
     "total_reads": 69,
     "correct_reads": 46,
@@ -275,9 +275,9 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 8.5,
-      "volume_sum": 8.5,
-      "count": 17
+      "vol_sum": 9.0,
+      "volume_sum": 9.0,
+      "count": 18
     }
   },
   "others": {
@@ -572,7 +572,13 @@
       "type": "regime_strength",
       "text": "CHOP reads are solid at 82% over 17 turns. the signal is readable.",
       "confidence": 0.75
+    },
+    {
+      "turn": 72,
+      "type": "regime_strength",
+      "text": "calibrated for CHOP. 82% accuracy holds over time.",
+      "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 72 turns observed \u00b7 69 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 82%\nweakest regime read: BEAR at 61%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 82% over 17 turns. the signal is readable."
+  "narrative_summary": "season 1 \u00b7 73 turns observed \u00b7 69 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 82%\nweakest regime read: BEAR at 61%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: calibrated for CHOP. 82% accuracy holds over time."
 }
