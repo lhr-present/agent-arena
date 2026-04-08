@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-08T09:03:26.138568+00:00",
-  "last_turn_processed": 62,
+  "last_updated": "2026-04-08T09:33:28.320760+00:00",
+  "last_turn_processed": 63,
   "self": {
-    "total_reads": 35,
+    "total_reads": 36,
     "correct_reads": 22,
-    "accuracy": 0.6286,
-    "score": 1439,
-    "streak": 4,
+    "accuracy": 0.6111,
+    "score": 1425,
+    "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 2,
-        "total": 9
+        "total": 10
       }
     }
   },
@@ -37,7 +37,7 @@
       "type": "confidence_penalty",
       "regime": "CHOP",
       "delta": -0.1,
-      "reason": "CHOP accuracy 22% \u2014 stop defaulting to CHOP"
+      "reason": "CHOP accuracy 20% \u2014 stop defaulting to CHOP"
     },
     {
       "type": "threshold_shift",
@@ -137,6 +137,13 @@
       "actual": "CHOP",
       "confidence": 0.49,
       "lesson": "BULL call in low-signal environment. when unsure, default CHOP."
+    },
+    {
+      "turn": 63,
+      "called": "CHOP",
+      "actual": "BEAR",
+      "confidence": 0.43,
+      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
     }
   ],
   "lessons": [
