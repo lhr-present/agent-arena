@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-08T15:33:22.972082+00:00",
-  "last_turn_processed": 75,
+  "last_updated": "2026-04-08T16:03:26.925527+00:00",
+  "last_turn_processed": 76,
   "self": {
-    "total_reads": 47,
+    "total_reads": 48,
     "correct_reads": 28,
-    "accuracy": 0.5957,
-    "score": 1740,
-    "streak": 4,
+    "accuracy": 0.5833,
+    "score": 1724,
+    "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
         "correct": 12,
-        "total": 20
+        "total": 21
       },
       "BEAR": {
         "correct": 10,
@@ -172,6 +172,13 @@
       "called": "BULL",
       "actual": "CHOP",
       "confidence": 0.45,
+      "lesson": "BULL call in low-signal environment. when unsure, default CHOP."
+    },
+    {
+      "turn": 76,
+      "called": "BULL",
+      "actual": "CHOP",
+      "confidence": 0.44,
       "lesson": "BULL call in low-signal environment. when unsure, default CHOP."
     }
   ],
