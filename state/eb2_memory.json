@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-08T09:33:28.320760+00:00",
-  "last_turn_processed": 63,
+  "last_updated": "2026-04-08T10:03:35.773731+00:00",
+  "last_turn_processed": 64,
   "self": {
-    "total_reads": 36,
-    "correct_reads": 22,
-    "accuracy": 0.6111,
-    "score": 1425,
-    "streak": 0,
+    "total_reads": 37,
+    "correct_reads": 23,
+    "accuracy": 0.6216,
+    "score": 1485,
+    "streak": 1,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
@@ -19,8 +19,8 @@
         "total": 8
       },
       "CHOP": {
-        "correct": 2,
-        "total": 10
+        "correct": 3,
+        "total": 11
       }
     }
   },
@@ -37,7 +37,7 @@
       "type": "confidence_penalty",
       "regime": "CHOP",
       "delta": -0.1,
-      "reason": "CHOP accuracy 20% \u2014 stop defaulting to CHOP"
+      "reason": "CHOP accuracy 27% \u2014 stop defaulting to CHOP"
     },
     {
       "type": "threshold_shift",

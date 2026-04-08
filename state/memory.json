@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T09:33:28.324826+00:00",
-  "last_turn_processed": 63,
+  "last_updated": "2026-04-08T10:03:35.776455+00:00",
+  "last_turn_processed": 64,
   "self": {
-    "total_reads": 61,
+    "total_reads": 62,
     "correct_reads": 40,
-    "accuracy": 0.656,
+    "accuracy": 0.645,
     "best_streak": 8,
     "current_streak": 0,
     "tokens": 1000,
-    "score": 2989,
+    "score": 2971,
     "regime_accuracy": {
       "BULL": {
         "correct": 18,
@@ -21,14 +21,10 @@
       },
       "CHOP": {
         "correct": 10,
-        "total": 12
+        "total": 13
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.59,
-        "correct": true
-      },
       {
         "conf": 0.68,
         "correct": false
@@ -224,6 +220,10 @@
       {
         "conf": 0.62,
         "correct": false
+      },
+      {
+        "conf": 0.88,
+        "correct": false
       }
     ],
     "worst_regime": "BEAR",
@@ -275,24 +275,24 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 6.0,
-      "volume_sum": 6.0,
-      "count": 12
+      "vol_sum": 6.5,
+      "volume_sum": 6.5,
+      "count": 13
     }
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 36,
-      "correct": 22,
-      "accuracy": 0.611,
+      "reads": 37,
+      "correct": 23,
+      "accuracy": 0.622,
       "calls": {
         "BULL": 18,
         "BEAR": 8,
-        "CHOP": 10
+        "CHOP": 11
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 63
+      "last_seen_turn": 64
     }
   },
   "comment_insights": [],
@@ -512,7 +512,13 @@
       "type": "regime_strength",
       "text": "calibrated for CHOP. 83% accuracy holds over time.",
       "confidence": 0.75
+    },
+    {
+      "turn": 64,
+      "type": "regime_strength",
+      "text": "calibrated for CHOP. 77% accuracy holds over time.",
+      "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 64 turns observed \u00b7 61 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 83%\nweakest regime read: BEAR at 60%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: calibrated for CHOP. 83% accuracy holds over time."
+  "narrative_summary": "season 1 \u00b7 65 turns observed \u00b7 62 reads logged\naccuracy: 64% \u00b7 best streak: 8\nstrongest regime read: CHOP at 77%\nweakest regime read: BEAR at 60%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: calibrated for CHOP. 77% accuracy holds over time."
 }
