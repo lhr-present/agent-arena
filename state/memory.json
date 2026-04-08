@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T07:12:18.708532+00:00",
-  "last_turn_processed": 58,
+  "last_updated": "2026-04-08T07:35:46.714101+00:00",
+  "last_turn_processed": 59,
   "self": {
-    "total_reads": 56,
-    "correct_reads": 37,
-    "accuracy": 0.661,
+    "total_reads": 57,
+    "correct_reads": 38,
+    "accuracy": 0.667,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 2,
     "tokens": 1000,
-    "score": 2805,
+    "score": 2890,
     "regime_accuracy": {
       "BULL": {
-        "correct": 16,
-        "total": 26
+        "correct": 17,
+        "total": 27
       },
       "BEAR": {
         "correct": 12,
@@ -25,10 +25,6 @@
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.7,
-        "correct": true
-      },
       {
         "conf": 0.81,
         "correct": true
@@ -224,6 +220,10 @@
       {
         "conf": 0.76,
         "correct": true
+      },
+      {
+        "conf": 0.92,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -263,9 +263,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 14.0,
-      "volume_sum": 14.0,
-      "count": 28
+      "vol_sum": 14.5,
+      "volume_sum": 14.5,
+      "count": 29
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -484,5 +484,5 @@
       "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 59 turns observed \u00b7 56 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 82%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: strongest in CHOP \u2014 82% correct. this regime is legible."
+  "narrative_summary": "season 1 \u00b7 60 turns observed \u00b7 57 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 82%\nweakest regime read: BULL at 63%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: strongest in CHOP \u2014 82% correct. this regime is legible."
 }
