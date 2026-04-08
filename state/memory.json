@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T12:03:21.811813+00:00",
-  "last_turn_processed": 68,
+  "last_updated": "2026-04-08T12:33:30.368376+00:00",
+  "last_turn_processed": 69,
   "self": {
-    "total_reads": 66,
-    "correct_reads": 43,
-    "accuracy": 0.652,
+    "total_reads": 67,
+    "correct_reads": 44,
+    "accuracy": 0.657,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 2,
     "tokens": 1000,
-    "score": 3162,
+    "score": 3240,
     "regime_accuracy": {
       "BULL": {
         "correct": 18,
@@ -20,15 +20,11 @@
         "total": 23
       },
       "CHOP": {
-        "correct": 11,
-        "total": 14
+        "correct": 12,
+        "total": 15
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.95,
-        "correct": true
-      },
       {
         "conf": 0.95,
         "correct": true
@@ -224,6 +220,10 @@
       {
         "conf": 0.66,
         "correct": true
+      },
+      {
+        "conf": 0.6,
+        "correct": true
       }
     ],
     "worst_regime": "BEAR",
@@ -275,24 +275,24 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 7.0,
-      "volume_sum": 7.0,
-      "count": 14
+      "vol_sum": 7.5,
+      "volume_sum": 7.5,
+      "count": 15
     }
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 41,
-      "correct": 23,
-      "accuracy": 0.561,
+      "reads": 42,
+      "correct": 24,
+      "accuracy": 0.571,
       "calls": {
         "BULL": 19,
         "BEAR": 8,
-        "CHOP": 14
+        "CHOP": 15
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 68
+      "last_seen_turn": 69
     }
   },
   "comment_insights": [],
@@ -548,7 +548,13 @@
       "type": "regime_weakness",
       "text": "accuracy in BEAR is only 61% over 23 reads. the pattern is not yet clear.",
       "confidence": 0.8
+    },
+    {
+      "turn": 69,
+      "type": "regime_strength",
+      "text": "strongest in CHOP \u2014 80% correct. this regime is legible.",
+      "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 69 turns observed \u00b7 66 reads logged\naccuracy: 65% \u00b7 best streak: 8\nstrongest regime read: CHOP at 79%\nweakest regime read: BEAR at 61%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: accuracy in BEAR is only 61% over 23 reads. the pattern is not yet clear."
+  "narrative_summary": "season 1 \u00b7 70 turns observed \u00b7 67 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 80%\nweakest regime read: BEAR at 61%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: strongest in CHOP \u2014 80% correct. this regime is legible."
 }
