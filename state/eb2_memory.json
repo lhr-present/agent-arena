@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "last_updated": "2026-04-08T11:33:20.641383+00:00",
-  "last_turn_processed": 67,
+  "last_updated": "2026-04-08T12:03:21.806647+00:00",
+  "last_turn_processed": 68,
   "self": {
-    "total_reads": 40,
+    "total_reads": 41,
     "correct_reads": 23,
-    "accuracy": 0.575,
-    "score": 1435,
+    "accuracy": 0.561,
+    "score": 1417,
     "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 3,
-        "total": 13
+        "total": 14
       }
     }
   },
@@ -37,7 +37,7 @@
       "type": "confidence_penalty",
       "regime": "CHOP",
       "delta": -0.1,
-      "reason": "CHOP accuracy 23% \u2014 stop defaulting to CHOP"
+      "reason": "CHOP accuracy 21% \u2014 stop defaulting to CHOP"
     },
     {
       "type": "threshold_shift",
@@ -164,6 +164,13 @@
       "called": "CHOP",
       "actual": "BEAR",
       "confidence": 0.37,
+      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
+    },
+    {
+      "turn": 68,
+      "called": "CHOP",
+      "actual": "BEAR",
+      "confidence": 0.42,
       "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
     }
   ],
