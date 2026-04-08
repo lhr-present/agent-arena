@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T16:03:26.917810+00:00",
-  "last_turn_processed": 76,
+  "last_updated": "2026-04-08T16:35:44.948938+00:00",
+  "last_turn_processed": 77,
   "self": {
-    "total_reads": 73,
-    "correct_reads": 49,
-    "accuracy": 0.671,
+    "total_reads": 74,
+    "correct_reads": 50,
+    "accuracy": 0.676,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 2,
     "tokens": 1000,
-    "score": 3672,
+    "score": 3737,
     "regime_accuracy": {
       "BULL": {
         "correct": 18,
@@ -20,15 +20,11 @@
         "total": 25
       },
       "CHOP": {
-        "correct": 15,
-        "total": 19
+        "correct": 16,
+        "total": 20
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.71,
-        "correct": false
-      },
       {
         "conf": 0.72,
         "correct": false
@@ -224,6 +220,10 @@
       {
         "conf": 0.59,
         "correct": true
+      },
+      {
+        "conf": 0.62,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -275,9 +275,9 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 10.0,
-      "volume_sum": 10.0,
-      "count": 20
+      "vol_sum": 10.5,
+      "volume_sum": 10.5,
+      "count": 21
     }
   },
   "others": {
@@ -584,7 +584,13 @@
       "type": "regime_strength",
       "text": "strongest in CHOP \u2014 78% correct. this regime is legible.",
       "confidence": 0.75
+    },
+    {
+      "turn": 77,
+      "type": "regime_strength",
+      "text": "CHOP reads are solid at 80% over 20 turns. the signal is readable.",
+      "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 77 turns observed \u00b7 73 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 79%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: strongest in CHOP \u2014 78% correct. this regime is legible."
+  "narrative_summary": "season 1 \u00b7 78 turns observed \u00b7 74 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 80%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 80% over 20 turns. the signal is readable."
 }
