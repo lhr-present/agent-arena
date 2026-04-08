@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T08:33:28.443475+00:00",
-  "last_turn_processed": 61,
+  "last_updated": "2026-04-08T09:03:26.141093+00:00",
+  "last_turn_processed": 62,
   "self": {
-    "total_reads": 59,
-    "correct_reads": 39,
-    "accuracy": 0.661,
+    "total_reads": 60,
+    "correct_reads": 40,
+    "accuracy": 0.667,
     "best_streak": 8,
-    "current_streak": 1,
+    "current_streak": 2,
     "tokens": 1000,
-    "score": 2925,
+    "score": 3005,
     "regime_accuracy": {
       "BULL": {
         "correct": 18,
@@ -20,15 +20,11 @@
         "total": 19
       },
       "CHOP": {
-        "correct": 9,
-        "total": 11
+        "correct": 10,
+        "total": 12
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.53,
-        "correct": true
-      },
       {
         "conf": 0.53,
         "correct": true
@@ -224,6 +220,10 @@
       {
         "conf": 0.63,
         "correct": true
+      },
+      {
+        "conf": 0.69,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -275,24 +275,24 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 5.5,
-      "volume_sum": 5.5,
-      "count": 11
+      "vol_sum": 6.0,
+      "volume_sum": 6.0,
+      "count": 12
     }
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 34,
-      "correct": 21,
-      "accuracy": 0.618,
+      "reads": 35,
+      "correct": 22,
+      "accuracy": 0.629,
       "calls": {
         "BULL": 18,
         "BEAR": 8,
-        "CHOP": 8
+        "CHOP": 9
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 61
+      "last_seen_turn": 62
     }
   },
   "comment_insights": [],
@@ -488,7 +488,19 @@
       "type": "regime_weakness",
       "text": "struggled most in BULL regime \u2014 61% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50.",
       "confidence": 0.8
+    },
+    {
+      "turn": 62,
+      "type": "regime_weakness",
+      "text": "accuracy in BULL is only 62% over 29 reads. the pattern is not yet clear.",
+      "confidence": 0.8
+    },
+    {
+      "turn": 62,
+      "type": "regime_strength",
+      "text": "strongest in CHOP \u2014 83% correct. this regime is legible.",
+      "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 62 turns observed \u00b7 59 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 82%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BULL regime \u2014 61% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50."
+  "narrative_summary": "season 1 \u00b7 63 turns observed \u00b7 60 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 83%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: strongest in CHOP \u2014 83% correct. this regime is legible."
 }
