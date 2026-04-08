@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-08T18:33:36.585978+00:00",
-  "last_turn_processed": 81,
+  "last_updated": "2026-04-08T19:03:20.463151+00:00",
+  "last_turn_processed": 82,
   "self": {
-    "total_reads": 52,
+    "total_reads": 53,
     "correct_reads": 31,
-    "accuracy": 0.5962,
-    "score": 1898,
-    "streak": 2,
+    "accuracy": 0.5849,
+    "score": 1882,
+    "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
         "correct": 12,
-        "total": 21
+        "total": 22
       },
       "BEAR": {
         "correct": 13,
@@ -34,13 +34,6 @@
   },
   "weight_adjustments": [],
   "mistakes": [
-    {
-      "turn": 27,
-      "called": "CHOP",
-      "actual": "BEAR",
-      "confidence": 0.43,
-      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
-    },
     {
       "turn": 28,
       "called": "BULL",
@@ -173,6 +166,13 @@
       "actual": "CHOP",
       "confidence": 0.7,
       "lesson": "called BEAR but market just noisy. high vol != bear, check momentum direction."
+    },
+    {
+      "turn": 82,
+      "called": "BULL",
+      "actual": "CHOP",
+      "confidence": 0.55,
+      "lesson": "BULL call in low-signal environment. when unsure, default CHOP."
     }
   ],
   "lessons": [
