@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T20:03:37.231403+00:00",
-  "last_turn_processed": 84,
+  "last_updated": "2026-04-08T20:33:20.512058+00:00",
+  "last_turn_processed": 85,
   "self": {
-    "total_reads": 81,
-    "correct_reads": 55,
-    "accuracy": 0.679,
+    "total_reads": 82,
+    "correct_reads": 56,
+    "accuracy": 0.683,
     "best_streak": 8,
-    "current_streak": 2,
+    "current_streak": 3,
     "tokens": 1000,
-    "score": 4083,
+    "score": 4170,
     "regime_accuracy": {
       "BULL": {
         "correct": 18,
@@ -20,15 +20,11 @@
         "total": 28
       },
       "CHOP": {
-        "correct": 18,
-        "total": 24
+        "correct": 19,
+        "total": 25
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.89,
-        "correct": true
-      },
       {
         "conf": 0.58,
         "correct": false
@@ -224,6 +220,10 @@
       {
         "conf": 0.78,
         "correct": true
+      },
+      {
+        "conf": 0.55,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -275,24 +275,24 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 12.5,
-      "volume_sum": 12.5,
-      "count": 25
+      "vol_sum": 13.0,
+      "volume_sum": 13.0,
+      "count": 26
     }
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 55,
+      "reads": 56,
       "correct": 33,
-      "accuracy": 0.6,
+      "accuracy": 0.589,
       "calls": {
-        "BULL": 22,
+        "BULL": 23,
         "BEAR": 14,
         "CHOP": 19
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 84
+      "last_seen_turn": 85
     }
   },
   "comment_insights": [],
@@ -598,5 +598,5 @@
       "confidence": 0.6
     }
   ],
-  "narrative_summary": "season 1 \u00b7 85 turns observed \u00b7 81 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 75%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: after 3 turns in same regime, shift probability increases. watch turn count."
+  "narrative_summary": "season 1 \u00b7 86 turns observed \u00b7 82 reads logged\naccuracy: 68% \u00b7 best streak: 8\nstrongest regime read: CHOP at 76%\nweakest regime read: BULL at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: after 3 turns in same regime, shift probability increases. watch turn count."
 }
