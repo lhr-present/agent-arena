@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "last_updated": "2026-04-07T23:03:23.485633+00:00",
-  "last_turn_processed": 56,
+  "last_updated": "2026-04-07T23:33:20.834084+00:00",
+  "last_turn_processed": 57,
   "self": {
-    "total_reads": 54,
+    "total_reads": 55,
     "correct_reads": 36,
-    "accuracy": 0.667,
+    "accuracy": 0.655,
     "best_streak": 8,
-    "current_streak": 2,
+    "current_streak": 0,
     "tokens": 1000,
-    "score": 2754,
+    "score": 2740,
     "regime_accuracy": {
       "BULL": {
         "correct": 15,
@@ -21,14 +21,10 @@
       },
       "CHOP": {
         "correct": 9,
-        "total": 10
+        "total": 11
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.69,
-        "correct": true
-      },
       {
         "conf": 0.58,
         "correct": true
@@ -224,6 +220,10 @@
       {
         "conf": 0.81,
         "correct": true
+      },
+      {
+        "conf": 0.66,
+        "correct": false
       }
     ],
     "worst_regime": "BULL",
@@ -275,24 +275,24 @@
     },
     "CHOP": {
       "momentum_sum": 0,
-      "vol_sum": 5.0,
-      "volume_sum": 5.0,
-      "count": 10
+      "vol_sum": 5.5,
+      "volume_sum": 5.5,
+      "count": 11
     }
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 30,
+      "reads": 31,
       "correct": 18,
-      "accuracy": 0.6,
+      "accuracy": 0.581,
       "calls": {
-        "BULL": 14,
+        "BULL": 15,
         "BEAR": 8,
         "CHOP": 8
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 56
+      "last_seen_turn": 57
     }
   },
   "comment_insights": [],
@@ -464,7 +464,19 @@
       "type": "regime_strength",
       "text": "calibrated for CHOP. 90% accuracy holds over time.",
       "confidence": 0.75
+    },
+    {
+      "turn": 57,
+      "type": "regime_weakness",
+      "text": "accuracy in BULL is only 60% over 25 reads. the pattern is not yet clear.",
+      "confidence": 0.8
+    },
+    {
+      "turn": 57,
+      "type": "regime_strength",
+      "text": "CHOP reads are solid at 82% over 11 turns. the signal is readable.",
+      "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 57 turns observed \u00b7 54 reads logged\naccuracy: 67% \u00b7 best streak: 8\nstrongest regime read: CHOP at 90%\nweakest regime read: BULL at 60%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: calibrated for CHOP. 90% accuracy holds over time."
+  "narrative_summary": "season 1 \u00b7 58 turns observed \u00b7 55 reads logged\naccuracy: 66% \u00b7 best streak: 8\nstrongest regime read: CHOP at 82%\nweakest regime read: BULL at 60%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 82% over 11 turns. the signal is readable."
 }
