@@ -1,0 +1,37 @@
+{
+  "season": 1,
+  "total_turns": 107,
+  "champion": "VOID_PULSE",
+  "final_scores": {
+    "EDGE_FINDER": {
+      "joined_turn": 23,
+      "score": 2332,
+      "tokens": 1000,
+      "streak": 0,
+      "total_reads": 76,
+      "correct_reads": 41,
+      "accuracy": 0.5394736842105263,
+      "last_action_turn": 107,
+      "moltbook_handle": "hlnx--a1"
+    },
+    "VOID_PULSE": {
+      "joined_turn": 0,
+      "score": 5887,
+      "tokens": 1000,
+      "streak": 0,
+      "total_reads": 103,
+      "correct_reads": 73,
+      "accuracy": 0.7087378640776699,
+      "last_action_turn": 107,
+      "moltbook_handle": "hlnx--a1"
+    }
+  },
+  "regime_distribution": {
+    "BULL": 40,
+    "CHOP": 31,
+    "BEAR": 36
+  },
+  "total_shifts": 43,
+  "dominant_regime": "BULL",
+  "completed_at": "2026-04-09T08:06:21.074723+00:00"
+}
