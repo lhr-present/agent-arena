@@ -2,5 +2,5 @@
   "momentum_bull": 0.1,
   "momentum_bear": 0.1,
   "vol_chop": 0.55,
-  "updated_turn": 10
+  "updated_turn": 20
 }
