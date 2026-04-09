@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-09T07:03:21.319622+00:00",
-  "last_turn_processed": 106,
+  "last_updated": "2026-04-09T08:06:23.445494+00:00",
+  "last_turn_processed": 107,
   "self": {
-    "total_reads": 75,
+    "total_reads": 76,
     "correct_reads": 41,
-    "accuracy": 0.5467,
-    "score": 2353,
-    "streak": 3,
+    "accuracy": 0.5395,
+    "score": 0,
+    "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
@@ -16,7 +16,7 @@
       },
       "BEAR": {
         "correct": 14,
-        "total": 15
+        "total": 16
       },
       "CHOP": {
         "correct": 9,
@@ -47,13 +47,6 @@
     }
   ],
   "mistakes": [
-    {
-      "turn": 65,
-      "called": "CHOP",
-      "actual": "BEAR",
-      "confidence": 0.43,
-      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
-    },
     {
       "turn": 66,
       "called": "BULL",
@@ -186,6 +179,13 @@
       "actual": "BEAR",
       "confidence": 0.53,
       "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
+    },
+    {
+      "turn": 107,
+      "called": "BEAR",
+      "actual": "CHOP",
+      "confidence": 0.69,
+      "lesson": "called BEAR but market just noisy. high vol != bear, check momentum direction."
     }
   ],
   "lessons": [

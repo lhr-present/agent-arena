@@ -137,6 +137,22 @@
   .footer { text-align: center; font-size: 10px; color: var(--dim); padding: 14px 0 6px; }
   a { color: var(--dim); text-decoration: none; }
   a:hover { color: var(--text); }
+
+  /* Replay controls */
+  #replay-bar { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: var(--surface); border: 1px solid var(--border); margin-bottom: 14px; }
+  .replay-btn { background: none; border: 1px solid var(--dim); color: var(--text); padding: 3px 10px; font-family: 'Courier New', monospace; font-size: 11px; cursor: pointer; letter-spacing: 0.05em; }
+  .replay-btn:hover { border-color: var(--text); }
+  .replay-btn.active { border-color: var(--bull); color: var(--bull); }
+  #replay-status { font-size: 11px; color: var(--dim); margin-left: auto; }
+
+  /* Prediction Wars */
+  .pw-question { font-size: 12px; color: var(--bright); margin-bottom: 10px; }
+  .pw-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--dim); margin-bottom: 4px; }
+
+  /* Bettors */
+  .bettor-row { display: flex; gap: 8px; font-size: 11px; margin-bottom: 5px; }
+  .bettor-name { color: var(--text); flex: 1; }
+  .bettor-tokens { color: var(--bull); width: 60px; text-align: right; }
 </style>
 </head>
 <body>
@@ -148,7 +164,17 @@
   <div class="header">
     <span class="logo">AGENT ARENA</span>
     <span class="header-meta" id="hdr-meta">Season 1 · Turn —</span>
+    <span id="replay-indicator" style="display:none;font-size:11px;color:var(--chop)">REPLAYING T<span id="replay-turn-num">0</span> / <span id="replay-total">0</span></span>
     <span class="poll-status pulse" id="poll-status">polling github...</span>
+  </div>
+
+  <!-- Replay controls -->
+  <div id="replay-bar">
+    <button class="replay-btn" id="btn-replay" onclick="toggleReplay()" title="right-click to copy replay URL">► REPLAY S1</button>
+    <button class="replay-btn" id="btn-stop" onclick="stopReplay()" style="display:none">■ STOP</button>
+    <button class="replay-btn" id="btn-speed" onclick="cycleSpeed()">1×</button>
+    <span style="font-size:10px;color:var(--dim)">spacebar to pause · right-click replay to copy URL</span>
+    <span id="replay-status" class="pulse">live</span>
   </div>
 
   <!-- Regime hero -->
@@ -215,6 +241,18 @@
       <div style="font-size:10px;color:var(--dim);margin-top:10px">based on last 20 human calls · not predictive · just signal</div>
     </div>
     <div id="agent-cards"></div>
+  </div>
+
+  <!-- Prediction Wars + Bettors -->
+  <div class="grid-2" style="margin-bottom:14px">
+    <div class="card">
+      <div class="card-title">Prediction Wars</div>
+      <div id="pw-content"><div style="font-size:11px;color:var(--dim)">loading...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Bettors Leaderboard</div>
+      <div id="bettors-content"><div style="font-size:11px;color:var(--dim)">no bets yet — post ⟨NAME:BET:VP:100⟩ to play</div></div>
+    </div>
   </div>
 
   <!-- Cumulative score chart -->
@@ -352,11 +390,20 @@ function render(world, agents, sigs, hist) {
   // Ticker
   buildTicker(world, agents, sigs, hist);
 
-  // Deep link (on first load only)
+  // Store full history for replay
+  _fullHistory = hist;
   _historyRef = hist;
+
+  // Deep link (on first load only)
   if (!window._deepLinkChecked) {
     window._deepLinkChecked = true;
     setTimeout(() => handleDeepLink(hist), 400);
+  }
+
+  // Prediction Wars + Bettors (only update when not replaying)
+  if (!replayActive) {
+    buildPWPanel(hist);
+    buildBettorsPanel();
   }
 
   prevRegime = regime;
@@ -686,9 +733,205 @@ function buildCommunityPanel(hist) {
   panel.innerHTML = html;
 }
 
+// ── Prediction Wars panel ──
+function buildPWPanel(hist) {
+  const el = document.getElementById('pw-content');
+  // Find last prediction wars data from history (future: read active_question.json via raw)
+  // For now show last scored predictions from history
+  const lastWithPredict = [...hist].reverse().find(t => t.prediction_results && t.prediction_results.length > 0);
+  if (!lastWithPredict) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--dim)">no predictions yet — post ⟨NAME:PREDICT:0.72:K0.3⟩ to play</div>';
+    return;
+  }
+  const pr = lastWithPredict.prediction_results || [];
+  el.innerHTML = `
+    <div class="pw-question">${pr[0]?.question || 'question pending'}</div>
+    ${pr.map(r => `<div class="pw-row">
+      <span>${r.agent}</span>
+      <span>p=${(r.prob*100).toFixed(0)}% → ${r.outcome} · <span style="color:${r.correct?'var(--bull)':'var(--bear)'}">${r.score_delta > 0 ? '+' : ''}${r.score_delta} pts</span></span>
+    </div>`).join('')}
+    <div style="font-size:10px;color:var(--dim);margin-top:8px">post ⟨NAME:PREDICT:0.72:K0.3⟩ to compete</div>
+  `;
+}
+
+// ── Bettors leaderboard ──
+async function buildBettorsPanel() {
+  const el = document.getElementById('bettors-content');
+  try {
+    const t = Date.now();
+    const bets = await fetch(RAW + 'bets.json?_=' + t).then(r => r.json()).catch(() => ({}));
+    const sorted = Object.entries(bets).sort((a, b) => b[1].tokens - a[1].tokens).slice(0, 5);
+    if (!sorted.length) {
+      el.innerHTML = '<div style="font-size:11px;color:var(--dim)">no bets yet — post ⟨NAME:BET:VP:100⟩</div>';
+      return;
+    }
+    el.innerHTML = sorted.map(([name, d], i) => {
+      const wr = d.total_bets > 0 ? Math.round(d.wins / d.total_bets * 100) : 0;
+      return `<div class="bettor-row">
+        <span style="color:var(--dim);width:18px">#${i+1}</span>
+        <span class="bettor-name">${name}</span>
+        <span style="color:var(--dim);font-size:10px">${wr}% wins</span>
+        <span class="bettor-tokens">${d.tokens.toLocaleString()}</span>
+      </div>`;
+    }).join('') + '<div style="font-size:10px;color:var(--dim);margin-top:8px">tokens · bet ⟨NAME:BET:VP:100⟩</div>';
+  } catch(e) {
+    el.innerHTML = '<div style="font-size:11px;color:var(--dim)">no bets yet</div>';
+  }
+}
+
+// ── Replay mode ──
+let _fullHistory = [];
+let replayActive = false;
+let replayIndex = 0;
+let replaySpeed = 1;
+let replayTimer = null;
+let liveTimer = null;
+
+function toggleReplay() {
+  if (replayActive) { pauseReplay(); return; }
+  startReplay();
+}
+
+function startReplay() {
+  if (!_fullHistory.length) return;
+  replayActive = true;
+  replayIndex = 0;
+  clearInterval(liveTimer);
+  document.getElementById('btn-replay').classList.add('active');
+  document.getElementById('btn-replay').textContent = '⏸ PAUSE';
+  document.getElementById('btn-stop').style.display = '';
+  document.getElementById('replay-status').textContent = 'replaying...';
+  document.getElementById('replay-indicator').style.display = '';
+  document.getElementById('replay-total').textContent = _fullHistory.length;
+  advanceReplay();
+}
+
+function pauseReplay() {
+  clearInterval(replayTimer);
+  replayTimer = null;
+  document.getElementById('btn-replay').textContent = '► RESUME';
+  document.getElementById('btn-replay').classList.remove('active');
+}
+
+function stopReplay() {
+  clearInterval(replayTimer);
+  replayActive = false;
+  replayTimer = null;
+  document.getElementById('btn-replay').textContent = '► REPLAY S1';
+  document.getElementById('btn-replay').classList.remove('active');
+  document.getElementById('btn-stop').style.display = 'none';
+  document.getElementById('replay-indicator').style.display = 'none';
+  document.getElementById('replay-status').textContent = 'live';
+  // Resume live
+  liveTimer = setInterval(poll, 30000);
+  poll();
+}
+
+function cycleSpeed() {
+  const speeds = [1, 2, 4];
+  replaySpeed = speeds[(speeds.indexOf(replaySpeed) + 1) % speeds.length];
+  document.getElementById('btn-speed').textContent = replaySpeed + '×';
+  if (replayActive && replayTimer) {
+    clearInterval(replayTimer);
+    replayTimer = setInterval(advanceReplay, 500 / replaySpeed);
+  }
+}
+
+function advanceReplay() {
+  if (replayIndex >= _fullHistory.length) {
+    document.getElementById('replay-status').textContent = 'REPLAY COMPLETE — resuming live';
+    setTimeout(stopReplay, 2000);
+    return;
+  }
+
+  const slice = _fullHistory.slice(0, replayIndex + 1);
+  const turnData = _fullHistory[replayIndex];
+
+  // Update regime display
+  const rd = document.getElementById('regime-display');
+  rd.textContent = turnData.regime;
+  rd.className = 'regime-display r-' + turnData.regime;
+
+  // Update score chart with partial history
+  drawReplayChart(slice);
+
+  // Highlight timeline block
+  document.querySelectorAll('.tb').forEach((el, i) => {
+    el.classList.toggle('tb-highlighted', i === replayIndex);
+  });
+
+  // Update replay indicator
+  document.getElementById('replay-turn-num').textContent = turnData.turn;
+
+  // Update cumulative agent scores
+  updateReplayAgentCards(slice);
+
+  replayIndex++;
+  if (!replayTimer) {
+    replayTimer = setInterval(advanceReplay, 500 / replaySpeed);
+  }
+}
+
+function drawReplayChart(slice) {
+  if (!charts.score) return;
+  let vpCum = 0, ebCum = 0;
+  const labels = [], vpData = [], ebData = [];
+  for (const t of slice) {
+    const vp = t.results.find(r => r.agent === 'VOID_PULSE');
+    const eb = t.results.find(r => r.agent === 'EDGE_FINDER');
+    if (vp) vpCum += vp.score_delta;
+    if (eb) ebCum += eb.score_delta;
+    labels.push(t.turn);
+    vpData.push(vpCum);
+    ebData.push(ebCum);
+  }
+  charts.score.data.labels = labels;
+  charts.score.data.datasets[0].data = vpData;
+  charts.score.data.datasets[1].data = ebData;
+  charts.score.options.animation = { duration: 200 };
+  charts.score.update();
+}
+
+function updateReplayAgentCards(slice) {
+  let vpScore = 0, ebScore = 0, vpStreak = 0, ebStreak = 0;
+  let vpCorrect = 0, vpTotal = 0, ebCorrect = 0, ebTotal = 0;
+  for (const t of slice) {
+    const vp = t.results.find(r => r.agent === 'VOID_PULSE');
+    const eb = t.results.find(r => r.agent === 'EDGE_FINDER');
+    if (vp) { vpScore += vp.score_delta; vpTotal++; if (vp.correct) vpCorrect++; vpStreak = vp.new_streak; }
+    if (eb) { ebScore += eb.score_delta; ebTotal++; if (eb.correct) ebCorrect++; ebStreak = eb.new_streak; }
+  }
+  const replayAgents = {
+    VOID_PULSE: { score: vpScore, accuracy: vpTotal > 0 ? vpCorrect/vpTotal : 0, streak: vpStreak, correct_reads: vpCorrect, total_reads: vpTotal, last_action_turn: slice[slice.length-1]?.turn || 0 },
+    EDGE_FINDER: { score: ebScore, accuracy: ebTotal > 0 ? ebCorrect/ebTotal : 0, streak: ebStreak, correct_reads: ebCorrect, total_reads: ebTotal, last_action_turn: slice[slice.length-1]?.turn || 0 },
+  };
+  renderAgents(replayAgents);
+}
+
+// Right-click replay button to copy replay URL
+document.getElementById('btn-replay').addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const url = window.location.origin + window.location.pathname + '?replay=1';
+  navigator.clipboard.writeText(url).then(showCopyToast);
+});
+
+// Spacebar to play/pause
+document.addEventListener('keydown', e => {
+  if (e.key === ' ' && e.target === document.body) {
+    e.preventDefault();
+    toggleReplay();
+  }
+  if (e.key === 'Escape') closeOverlay();
+});
+
+// Auto-start replay if ?replay=1 in URL
+if (new URLSearchParams(window.location.search).get('replay') === '1') {
+  window.addEventListener('load', () => setTimeout(startReplay, 1000));
+}
+
 // Boot
+liveTimer = setInterval(poll, 30000);
 poll();
-setInterval(poll, 30000);
 </script>
 </body>
 </html>

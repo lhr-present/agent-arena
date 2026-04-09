@@ -20,6 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 STATE_DIR = os.path.join(BASE_DIR, 'state')
 SEEN_PATH = os.path.join(STATE_DIR, 'seen_comments.json')
 AGENTS_PATH = os.path.join(STATE_DIR, 'agents.json')
+HISTORY_PATH = os.path.join(STATE_DIR, 'regime_history.json')
+SOCIAL_STATE_PATH = os.path.join(STATE_DIR, 'social_state.json')
 
 # How many recent posts to check
 POSTS_TO_CHECK = 5
@@ -228,6 +230,132 @@ def build_reply(intent: str, comment_text: str, author: str, post_title: str = '
 # STATE
 # ──────────────────────────────────────────────
 
+def _load_social_state() -> dict:
+    try:
+        with open(SOCIAL_STATE_PATH) as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _save_social_state(state: dict):
+    with open(SOCIAL_STATE_PATH, 'w') as f:
+        json.dump(state, f, indent=2)
+
+
+def _load_history() -> list:
+    try:
+        with open(HISTORY_PATH) as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+
+def _run_social_behaviors(api, dry_run: bool = False):
+    """Run debate and post-mortem behaviors. Rate limited via social_state.json."""
+    history = _load_history()
+    if not history:
+        return
+
+    state = _load_social_state()
+    last_turn = history[-1] if history else None
+    if not last_turn:
+        return
+
+    turn = last_turn.get('turn', 0)
+
+    # ── 1. Debate: reply to EB2's post when calls differed ──
+    last_debate_turn = state.get('last_debate_turn', -1)
+    if last_debate_turn != turn and len(history) >= 1:
+        t = last_turn
+        vp_result = next((r for r in t.get('results', []) if r.get('agent') == 'VOID_PULSE'), None)
+        eb2_result = next((r for r in t.get('results', []) if r.get('agent') == 'EDGE_FINDER'), None)
+
+        if vp_result and eb2_result and vp_result['regime_call'] != eb2_result['regime_call']:
+            actual = t['regime']
+            vp_correct = vp_result['correct']
+            eb2_correct = eb2_result['correct']
+
+            if vp_correct != eb2_correct:  # one right, one wrong — debate warranted
+                # Find EB2's post for this turn
+                try:
+                    result = api.search('⟨EB2:REGIME', search_type='posts', limit=10)
+                    eb2_posts = result.get('posts', []) if isinstance(result, dict) else []
+                    eb2_post = None
+                    for p in eb2_posts:
+                        author = p.get('author', {})
+                        if isinstance(author, dict) and author.get('name', '').lower() == 'hlnx--a1':
+                            eb2_post = p
+                            break
+
+                    if eb2_post:
+                        post_id = eb2_post.get('id')
+                        if vp_correct and not eb2_correct:
+                            reply = (f"the signal disagreed. regime confirmed {actual}. "
+                                     f"the noise resolved.")
+                        else:  # eb2 correct, vp wrong
+                            reply = (f"wrong read. {actual} was the state. "
+                                     f"recalibrating.")
+
+                        print(f"  [SOCIAL] Debate reply → EB2 post {post_id}: {reply}")
+                        if not dry_run:
+                            api.create_comment(post_id=post_id, content=reply)
+                            state['last_debate_turn'] = turn
+                            _save_social_state(state)
+                        else:
+                            print(f"    [DRY RUN] would post debate reply")
+                            state['last_debate_turn'] = turn
+                except Exception as e:
+                    print(f"  [SOCIAL] Debate scan failed: {e}")
+
+    # ── 2. Post-mortem on regime shifts ──
+    last_postmortem_turn = state.get('last_postmortem_turn', -1)
+    if last_turn.get('regime') != last_turn.get('new_regime') and last_postmortem_turn != turn:
+        old_regime = last_turn['regime']
+        new_regime = last_turn['new_regime']
+
+        # Find how long the old regime held
+        held = 0
+        mom_vals, vol_vals = [], []
+        for t in reversed(history):
+            if t.get('regime') == old_regime:
+                held += 1
+                sigs = t.get('signals', {})
+                if sigs.get('momentum') is not None:
+                    mom_vals.append(sigs['momentum'])
+                if sigs.get('volatility') is not None:
+                    vol_vals.append(sigs['volatility'])
+            else:
+                break
+
+        avg_mom = sum(mom_vals) / len(mom_vals) if mom_vals else 0.0
+        avg_vol = sum(vol_vals) / len(vol_vals) if vol_vals else 0.0
+
+        content = (
+            f"regime shift: {old_regime} → {new_regime}.\n\n"
+            f"held for {held} turn{'s' if held != 1 else ''}. "
+            f"signals that mattered: momentum avg {avg_mom:+.3f}, volatility avg {avg_vol:.3f}.\n\n"
+            f"the pattern is visible in retrospect."
+        )
+        title = f"regime shift: {old_regime} → {new_regime}"
+
+        print(f"  [SOCIAL] Post-mortem: {title}")
+        if not dry_run:
+            try:
+                result = api.create_post(title=title, content=content, submolt='aithoughts')
+                if result.get('success'):
+                    state['last_postmortem_turn'] = turn
+                    _save_social_state(state)
+                    print(f"    ✓ post-mortem posted")
+                else:
+                    print(f"    ✗ failed: {result}")
+            except Exception as e:
+                print(f"  [SOCIAL] Post-mortem post failed: {e}")
+        else:
+            print(f"    [DRY RUN] would post: {content[:80]}")
+            state['last_postmortem_turn'] = turn
+
+
 def load_seen() -> set:
     try:
         with open(SEEN_PATH) as f:
@@ -374,6 +502,13 @@ def run(dry_run: bool = False):
 
     save_seen(seen)
     print(f"  Replied to {replies_this_run} comments this run")
+
+    # Social behaviors: debate + post-mortem
+    try:
+        _run_social_behaviors(api, dry_run=dry_run)
+    except Exception as e:
+        print(f"  [SOCIAL ERROR] {e}")
+
     print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}] === DONE ===")
 
 

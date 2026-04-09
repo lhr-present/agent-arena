@@ -232,6 +232,44 @@ def broadcast_turn(turn_result: dict):
         f'<a href="{REPO_URL}">github</a> · {DASHBOARD_URL}'
     )
 
+    # Prediction Wars block
+    pred_results = turn_result.get('prediction_results', [])
+    if pred_results:
+        try:
+            import prediction_wars
+            status = prediction_wars.get_status()
+            pred_lines = []
+            for pr in pred_results:
+                sym = '✅' if pr['correct'] else '❌'
+                pred_lines.append(
+                    f"  {sym} <b>{pr['agent']}</b> → p={pr['prob']:.0%} | "
+                    f"outcome={pr['outcome']} | {pr['score_delta']:+d} pts"
+                )
+            if pred_lines:
+                pred_msg = (
+                    f"🎯 <b>PREDICTION WARS</b>\n"
+                    f"Q: {pred_results[0]['question']}\n"
+                    + '\n'.join(pred_lines)
+                )
+                if status.get('active'):
+                    pred_msg += f"\n\nNext: {status['question']}"
+                _send(pred_msg)
+        except Exception:
+            pass
+
+    # Bet resolution block
+    bet_resolutions = turn_result.get('bet_resolutions', [])
+    if bet_resolutions:
+        bet_lines = []
+        for b in bet_resolutions:
+            sym = '💰' if b['won'] else '💸'
+            bet_lines.append(
+                f"  {sym} <b>@{b['bettor']}</b> bet {b['amount']} on {b['target_tag']} — "
+                f"{'WON' if b['won'] else 'LOST'} — {b['delta']:+d} tokens (total: {b['new_total']})"
+            )
+        if bet_lines:
+            _send("🎰 <b>BETS RESOLVED</b>\n" + '\n'.join(bet_lines))
+
     result = _send(msg)
 
     # Milestone checks (fires additional messages if warranted)

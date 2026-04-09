@@ -8,6 +8,7 @@ import json
 import random
 import math
 import os
+import sys
 from datetime import datetime, timezone
 
 STATE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'state')
@@ -73,31 +74,89 @@ def generate(regime: str, turn: int, prev_signals: dict | None = None) -> dict:
     }
 
 
+def _check_oracle_trap(agent_name: str) -> bool:
+    """Return True if agent has oracle status (streak>=5, accuracy>=0.70)."""
+    try:
+        agents_path = os.path.join(STATE_DIR, 'agents.json')
+        with open(agents_path) as f:
+            agents = json.load(f)
+        a = agents.get(agent_name, {})
+        return a.get('streak', 0) >= 5 and a.get('accuracy', 0) >= 0.70
+    except Exception:
+        return False
+
+
+def _fire_oracle_trap_alert(agent_name: str, turn: int):
+    """Post Telegram alert first time oracle trap activates for an agent."""
+    milestones_path = os.path.join(STATE_DIR, 'milestones.json')
+    key = f"oracle_trap_{agent_name}"
+    try:
+        with open(milestones_path) as f:
+            milestones = json.load(f)
+    except Exception:
+        milestones = {}
+
+    if key not in milestones:
+        milestones[key] = turn
+        with open(milestones_path, 'w') as f:
+            json.dump(milestones, f, indent=2)
+        try:
+            engine_dir = os.path.dirname(os.path.abspath(__file__))
+            sys.path.insert(0, engine_dir)
+            import broadcaster
+            broadcaster.broadcast_announcement(
+                f"🎯 <b>oracle trap engaged for {agent_name}</b>\n"
+                f"the edge erodes when it becomes visible.\n"
+                f"private signal noise increased. the advantage attenuates."
+            )
+        except Exception:
+            pass
+
+
 def generate_private_vp(regime: str, turn: int, public_momentum: float) -> dict:
-    """Private signal for VOID_PULSE: sharper momentum (40% less noise)."""
+    """Private signal for VOID_PULSE: sharper momentum (40% less noise).
+    Oracle trap: if VP is in oracle status, noise increases by 15% + secondary offset."""
     params = REGIME_PARAMS.get(regime, REGIME_PARAMS['CHOP'])
-    raw = params['momentum_bias'] + random.gauss(0, PRIVATE_VP_NOISE)
+
+    oracle_trap = _check_oracle_trap('VOID_PULSE')
+    noise = PRIVATE_VP_NOISE * (1.15 if oracle_trap else 1.0)
+
+    raw = params['momentum_bias'] + random.gauss(0, noise)
     raw = _clamp(raw, -1.0, 1.0)
-    # Blend with public momentum — agent sees a partially denoised signal
+    if oracle_trap:
+        raw += random.gauss(0, 0.08)
+        raw = _clamp(raw, -1.0, 1.0)
+        _fire_oracle_trap_alert('VOID_PULSE', turn)
+
     private_momentum = round(0.7 * raw + 0.3 * public_momentum, 3)
     return {
         "turn": turn,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "private_momentum": private_momentum,
+        "oracle_trap_active": oracle_trap,
         "note": "VP private signal: reduced noise. confirms or contradicts public read.",
     }
 
 
 def generate_private_eb2(regime: str, turn: int) -> dict:
-    """Private signal for EDGE_FINDER: synthetic sports edge density."""
+    """Private signal for EDGE_FINDER: synthetic sports edge density.
+    Oracle trap: if EB2 is in oracle status, edge signal gets extra noise."""
     bias = SPORTS_EDGE_BIAS.get(regime, 0.5)
-    # Random walk biased by regime
-    raw_edge = bias + random.gauss(0, 0.18)
+
+    oracle_trap = _check_oracle_trap('EDGE_FINDER')
+    noise = 0.18 * (1.15 if oracle_trap else 1.0)
+
+    raw_edge = bias + random.gauss(0, noise)
+    if oracle_trap:
+        raw_edge += random.gauss(0, 0.08)
+        _fire_oracle_trap_alert('EDGE_FINDER', turn)
+
     sports_edge = round(_clamp(raw_edge), 3)
     return {
         "turn": turn,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "sports_edge": sports_edge,
+        "oracle_trap_active": oracle_trap,
         "note": "EB2 private signal: synthetic edge density. >0.65=rich, <0.35=dry.",
     }
 

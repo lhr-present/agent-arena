@@ -434,6 +434,16 @@ def process_turn(dry_run: bool = False, force_turn: int = None) -> dict:
             print(f"    {sym} HUMAN @{ha['author']}: {scored['regime_call']} vs {current_regime} "
                   f"→ {scored['score_delta']:+d} pts")
 
+    # Bet engine: resolve pending bets
+    bet_resolutions = []
+    try:
+        import bet_engine
+        bet_resolutions = bet_engine.resolve_bets(results, dry_run=dry_run)
+        if bet_resolutions:
+            print(f"  [BETS] Resolved {len(bet_resolutions)} bets")
+    except Exception as e:
+        print(f"  [BET WARN] {e}")
+
     # Check season end — triggers if we've exceeded season length
     season_ended = False
     champion = None
@@ -464,6 +474,29 @@ def process_turn(dry_run: bool = False, force_turn: int = None) -> dict:
 
     signals = signals_generator.generate(new_regime, new_turn, None)
 
+    # Prediction Wars: score active question + post next (after regime advance)
+    prediction_results = []
+    try:
+        import prediction_wars
+        try:
+            with open(os.path.join(STATE_DIR, 'world_signals.json')) as f:
+                next_sigs = json.load(f)
+        except Exception:
+            next_sigs = {}
+        prediction_results = prediction_wars.score_if_ready(
+            turn, new_regime, next_sigs, current_regime, dry_run=dry_run
+        )
+        prediction_wars.post_next_question(new_regime, new_turn, next_sigs, dry_run=dry_run)
+    except Exception as e:
+        print(f"  [PREDICT WARN] {e}")
+
+    # Include public signals in history so threshold optimizer can use them
+    try:
+        with open(os.path.join(STATE_DIR, 'world_signals.json')) as f:
+            hist_signals = json.load(f).get('signals', {})
+    except Exception:
+        hist_signals = {}
+
     history.append({
         'turn': turn,
         'season': season,
@@ -471,6 +504,7 @@ def process_turn(dry_run: bool = False, force_turn: int = None) -> dict:
         'new_regime': new_regime,
         'results': results,
         'sprint': is_sprint,
+        'signals': hist_signals,
         'timestamp': datetime.now(timezone.utc).isoformat(),
     })
 
@@ -500,6 +534,8 @@ def process_turn(dry_run: bool = False, force_turn: int = None) -> dict:
         'sprint': is_sprint,
         'season_ended': season_ended,
         'champion': champion,
+        'prediction_results': prediction_results,
+        'bet_resolutions': bet_resolutions,
     }
 
 

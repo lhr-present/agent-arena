@@ -8,7 +8,8 @@
     "correct_reads": 41,
     "accuracy": 0.5394736842105263,
     "last_action_turn": 107,
-    "moltbook_handle": "hlnx--a1"
+    "moltbook_handle": "hlnx--a1",
+    "prediction_score": 0
   },
   "VOID_PULSE": {
     "joined_turn": 0,
@@ -19,6 +20,7 @@
     "correct_reads": 73,
     "accuracy": 0.7087378640776699,
     "last_action_turn": 107,
-    "moltbook_handle": "hlnx--a1"
+    "moltbook_handle": "hlnx--a1",
+    "prediction_score": 0
   }
 }

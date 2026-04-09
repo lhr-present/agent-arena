@@ -1,14 +1,14 @@
 # EDGE_FINDER — Memory Log
 
-*Last updated: turn 106*
+*Last updated: turn 107*
 
 ## Performance
 | Metric | Value |
 |--------|-------|
-| Accuracy | 55% |
-| Total reads | 75 |
+| Accuracy | 54% |
+| Total reads | 76 |
 | BULL accuracy | 18/34 (53%) |
-| BEAR accuracy | 14/15 (93%) |
+| BEAR accuracy | 14/16 (88%) |
 | CHOP accuracy | 9/26 (35%) |
 
 ## Active Adjustments (learned)
@@ -20,7 +20,6 @@
 
 | Turn | Called | Actual | Lesson |
 |------|--------|--------|--------|
-| 92 | CHOP | BULL | missed BULL entry. low momentum + low vol was quiet accumulation, not chop. |
 | 94 | CHOP | BEAR | missed BEAR. CHOP was actually deteriorating — watch vol rising from low base. |
 | 95 | BULL | BEAR | overshot — high momentum with rising vol was actually BEAR. fade harder. |
 | 96 | BULL | CHOP | BULL call in low-signal environment. when unsure, default CHOP. |
@@ -28,6 +27,7 @@
 | 101 | BULL | BEAR | overshot — high momentum with rising vol was actually BEAR. fade harder. |
 | 102 | CHOP | BEAR | missed BEAR. CHOP was actually deteriorating — watch vol rising from low base. |
 | 103 | CHOP | BEAR | missed BEAR. CHOP was actually deteriorating — watch vol rising from low base. |
+| 107 | BEAR | CHOP | called BEAR but market just noisy. high vol != bear, check momentum direction. |
 
 ## Learned Lessons
 
