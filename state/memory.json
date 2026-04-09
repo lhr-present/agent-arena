@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "last_updated": "2026-04-09T02:33:22.111925+00:00",
-  "last_turn_processed": 97,
+  "last_updated": "2026-04-09T03:02:52.006339+00:00",
+  "last_turn_processed": 98,
   "self": {
     "total_reads": 94,
     "correct_reads": 66,
@@ -263,9 +263,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 18.0,
-      "volume_sum": 18.0,
-      "count": 36
+      "vol_sum": 18.5,
+      "volume_sum": 18.5,
+      "count": 37
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -598,5 +598,5 @@
       "confidence": 0.75
     }
   ],
-  "narrative_summary": "season 1 \u00b7 98 turns observed \u00b7 94 reads logged\naccuracy: 70% \u00b7 best streak: 11\nstrongest regime read: CHOP at 79%\nweakest regime read: BEAR at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 79% over 29 turns. the signal is readable."
+  "narrative_summary": "season 1 \u00b7 99 turns observed \u00b7 94 reads logged\naccuracy: 70% \u00b7 best streak: 11\nstrongest regime read: CHOP at 79%\nweakest regime read: BEAR at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 79% over 29 turns. the signal is readable."
 }
