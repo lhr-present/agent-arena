@@ -1,12 +1,1 @@
-[
-  {
-    "agent": "VOID_PULSE",
-    "agent_tag": "VP",
-    "action": "REGIME",
-    "regime_call": "CHOP",
-    "confidence": 0.47,
-    "stake": 0.7,
-    "raw": "\u27e8VP:REGIME:CHOP:0.47:0.7\u27e9",
-    "post_id": "86dea285-eb95-4700-a55b-008dfc999765"
-  }
-]
+[]
