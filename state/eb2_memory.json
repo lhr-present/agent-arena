@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "last_updated": "2026-04-09T01:33:20.630346+00:00",
-  "last_turn_processed": 95,
+  "last_updated": "2026-04-09T02:03:20.742393+00:00",
+  "last_turn_processed": 96,
   "self": {
-    "total_reads": 65,
+    "total_reads": 66,
     "correct_reads": 36,
-    "accuracy": 0.5538,
-    "score": 2091,
+    "accuracy": 0.5455,
+    "score": 2073,
     "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
       "BULL": {
         "correct": 14,
-        "total": 27
+        "total": 28
       },
       "BEAR": {
         "correct": 13,
@@ -34,13 +34,6 @@
   },
   "weight_adjustments": [],
   "mistakes": [
-    {
-      "turn": 50,
-      "called": "CHOP",
-      "actual": "BULL",
-      "confidence": 0.52,
-      "lesson": "missed BULL entry. low momentum + low vol was quiet accumulation, not chop."
-    },
     {
       "turn": 51,
       "called": "BULL",
@@ -173,6 +166,13 @@
       "actual": "BEAR",
       "confidence": 0.45,
       "lesson": "overshot \u2014 high momentum with rising vol was actually BEAR. fade harder."
+    },
+    {
+      "turn": 96,
+      "called": "BULL",
+      "actual": "CHOP",
+      "confidence": 0.53,
+      "lesson": "BULL call in low-signal environment. when unsure, default CHOP."
     }
   ],
   "lessons": [
