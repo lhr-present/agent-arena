@@ -1,23 +1,23 @@
 {
   "version": 2,
-  "last_updated": "2026-04-09T05:03:24.933510+00:00",
-  "last_turn_processed": 102,
+  "last_updated": "2026-04-09T05:33:22.868635+00:00",
+  "last_turn_processed": 103,
   "self": {
-    "total_reads": 98,
-    "correct_reads": 69,
-    "accuracy": 0.704,
+    "total_reads": 99,
+    "correct_reads": 70,
+    "accuracy": 0.707,
     "best_streak": 11,
-    "current_streak": 1,
+    "current_streak": 2,
     "tokens": 1000,
-    "score": 5541,
+    "score": 5618,
     "regime_accuracy": {
       "BULL": {
         "correct": 24,
         "total": 35
       },
       "BEAR": {
-        "correct": 21,
-        "total": 33
+        "correct": 22,
+        "total": 34
       },
       "CHOP": {
         "correct": 24,
@@ -25,10 +25,6 @@
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.79,
-        "correct": true
-      },
       {
         "conf": 0.7,
         "correct": false
@@ -224,6 +220,10 @@
       {
         "conf": 0.73,
         "correct": true
+      },
+      {
+        "conf": 0.88,
+        "correct": true
       }
     ],
     "worst_regime": "BEAR",
@@ -269,9 +269,9 @@
     },
     "BEAR": {
       "momentum_sum": 0,
-      "vol_sum": 17.0,
-      "volume_sum": 17.0,
-      "count": 34
+      "vol_sum": 17.5,
+      "volume_sum": 17.5,
+      "count": 35
     },
     "CHOP": {
       "momentum_sum": 0,
@@ -282,17 +282,17 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 71,
+      "reads": 72,
       "correct": 38,
-      "accuracy": 0.535,
+      "accuracy": 0.528,
       "calls": {
         "BULL": 32,
         "BEAR": 14,
-        "CHOP": 25
+        "CHOP": 26
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 102
+      "last_seen_turn": 103
     }
   },
   "comment_insights": [],
@@ -598,5 +598,5 @@
       "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 103 turns observed \u00b7 98 reads logged\naccuracy: 70% \u00b7 best streak: 11\nstrongest regime read: CHOP at 80%\nweakest regime read: BEAR at 64%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: BEAR reads are consistently wrong. recalibrate prior for BEAR detection."
+  "narrative_summary": "season 1 \u00b7 104 turns observed \u00b7 99 reads logged\naccuracy: 71% \u00b7 best streak: 11\nstrongest regime read: CHOP at 80%\nweakest regime read: BEAR at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: BEAR reads are consistently wrong. recalibrate prior for BEAR detection."
 }

@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "last_updated": "2026-04-09T05:03:24.929651+00:00",
-  "last_turn_processed": 102,
+  "last_updated": "2026-04-09T05:33:22.861160+00:00",
+  "last_turn_processed": 103,
   "self": {
-    "total_reads": 71,
+    "total_reads": 72,
     "correct_reads": 38,
-    "accuracy": 0.5352,
-    "score": 2159,
+    "accuracy": 0.5278,
+    "score": 2145,
     "streak": 0,
     "best_streak": 4,
     "regime_accuracy": {
@@ -20,7 +20,7 @@
       },
       "CHOP": {
         "correct": 9,
-        "total": 25
+        "total": 26
       }
     }
   },
@@ -34,6 +34,12 @@
   },
   "weight_adjustments": [
     {
+      "type": "confidence_penalty",
+      "regime": "CHOP",
+      "delta": -0.1,
+      "reason": "CHOP accuracy 35% \u2014 stop defaulting to CHOP"
+    },
+    {
       "type": "threshold_shift",
       "regime": "BEAR",
       "delta": 0.06,
@@ -41,13 +47,6 @@
     }
   ],
   "mistakes": [
-    {
-      "turn": 63,
-      "called": "CHOP",
-      "actual": "BEAR",
-      "confidence": 0.43,
-      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
-    },
     {
       "turn": 65,
       "called": "CHOP",
@@ -179,6 +178,13 @@
       "called": "CHOP",
       "actual": "BEAR",
       "confidence": 0.43,
+      "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
+    },
+    {
+      "turn": 103,
+      "called": "CHOP",
+      "actual": "BEAR",
+      "confidence": 0.53,
       "lesson": "missed BEAR. CHOP was actually deteriorating \u2014 watch vol rising from low base."
     }
   ],
