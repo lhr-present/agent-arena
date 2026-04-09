@@ -1,19 +1,19 @@
 {
   "version": 2,
-  "last_updated": "2026-04-08T23:33:20.550067+00:00",
-  "last_turn_processed": 91,
+  "last_updated": "2026-04-09T00:03:21.352183+00:00",
+  "last_turn_processed": 92,
   "self": {
-    "total_reads": 88,
-    "correct_reads": 62,
-    "accuracy": 0.705,
-    "best_streak": 9,
-    "current_streak": 9,
+    "total_reads": 89,
+    "correct_reads": 63,
+    "accuracy": 0.708,
+    "best_streak": 10,
+    "current_streak": 10,
     "tokens": 1000,
-    "score": 4872,
+    "score": 5037,
     "regime_accuracy": {
       "BULL": {
-        "correct": 20,
-        "total": 31
+        "correct": 21,
+        "total": 32
       },
       "BEAR": {
         "correct": 20,
@@ -25,10 +25,6 @@
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.73,
-        "correct": true
-      },
       {
         "conf": 0.72,
         "correct": false
@@ -224,6 +220,10 @@
       {
         "conf": 0.95,
         "correct": true
+      },
+      {
+        "conf": 0.89,
+        "correct": true
       }
     ],
     "worst_regime": "BULL",
@@ -263,9 +263,9 @@
   "signal_memory": {
     "BULL": {
       "momentum_sum": 0,
-      "vol_sum": 16.5,
-      "volume_sum": 16.5,
-      "count": 33
+      "vol_sum": 17.0,
+      "volume_sum": 17.0,
+      "count": 34
     },
     "BEAR": {
       "momentum_sum": 0,
@@ -282,33 +282,21 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 61,
+      "reads": 62,
       "correct": 35,
-      "accuracy": 0.574,
+      "accuracy": 0.565,
       "calls": {
         "BULL": 25,
         "BEAR": 14,
-        "CHOP": 22
+        "CHOP": 23
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 91
+      "last_seen_turn": 92
     }
   },
   "comment_insights": [],
   "lessons": [
-    {
-      "turn": 29,
-      "type": "regime_weakness",
-      "text": "BULL reads are consistently wrong. recalibrate prior for BULL detection.",
-      "confidence": 0.8
-    },
-    {
-      "turn": 34,
-      "type": "regime_weakness",
-      "text": "accuracy in BULL is only 50% over 12 reads. the pattern is not yet clear.",
-      "confidence": 0.8
-    },
     {
       "turn": 38,
       "type": "regime_weakness",
@@ -596,7 +584,19 @@
       "type": "regime_strength",
       "text": "CHOP reads are solid at 79% over 28 turns. the signal is readable.",
       "confidence": 0.75
+    },
+    {
+      "turn": 92,
+      "type": "regime_weakness",
+      "text": "accuracy in BULL is only 66% over 32 reads. the pattern is not yet clear.",
+      "confidence": 0.8
+    },
+    {
+      "turn": 92,
+      "type": "transition_signal",
+      "text": "longest run observed: 5 turns. current run: 1. baseline pressure building.",
+      "confidence": 0.6
     }
   ],
-  "narrative_summary": "season 1 \u00b7 92 turns observed \u00b7 88 reads logged\naccuracy: 70% \u00b7 best streak: 9\nstrongest regime read: CHOP at 79%\nweakest regime read: BULL at 65%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: CHOP reads are solid at 79% over 28 turns. the signal is readable."
+  "narrative_summary": "season 1 \u00b7 93 turns observed \u00b7 89 reads logged\naccuracy: 71% \u00b7 best streak: 10\nstrongest regime read: CHOP at 79%\nweakest regime read: BULL at 66%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: longest run observed: 5 turns. current run: 1. baseline pressure building."
 }
