@@ -15,6 +15,7 @@ import random
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SIGNALS_PATH = os.path.join(BASE_DIR, 'state', 'world_signals.json')
+PRIVATE_EB2_PATH = os.path.join(BASE_DIR, 'state', 'private_eb2.json')
 MEMORY_PATH  = os.path.join(BASE_DIR, 'state', 'eb2_memory.json')
 
 LEONARDO_DIR = os.path.expanduser('~/leonardo')
@@ -154,14 +155,40 @@ def _apply_adjustments(regime: str, confidence: float, adjustments: list) -> flo
     return round(max(0.30, min(0.95, confidence)), 2)
 
 
+def _read_private_signal() -> float | None:
+    """Read EB2's private sports_edge signal from signals_generator."""
+    try:
+        with open(PRIVATE_EB2_PATH) as f:
+            data = json.load(f)
+        return data.get('sports_edge')
+    except Exception:
+        return None
+
+
+def _infer_from_private_edge(sports_edge: float) -> tuple[str, float] | None:
+    """Translate private synthetic sports_edge into a regime call."""
+    if sports_edge > 0.65:
+        confidence = min(0.88, 0.55 + (sports_edge - 0.65) * 0.7)
+        return 'BULL', round(confidence, 2)
+    elif sports_edge < 0.35:
+        confidence = min(0.84, 0.55 + (0.35 - sports_edge) * 0.7)
+        return 'BEAR', round(confidence, 2)
+    # Noisy middle — CHOP
+    elif 0.42 <= sports_edge <= 0.58:
+        confidence = min(0.75, 0.48 + (0.58 - abs(sports_edge - 0.5)) * 0.4)
+        return 'CHOP', round(confidence, 2)
+    return None
+
+
 def infer_regime() -> tuple[str, float, str]:
     """Infer regime. Returns (regime, confidence, method).
 
-    Tries Leonardo's sports edges first; falls back to contrarian signal read.
+    Priority: real sports edges → private synthetic edge → contrarian signals.
     Applies learned weight adjustments from memory_loop.
     """
     adjustments = load_weight_adjustments()
 
+    # Try real sports edges from Leonardo first
     edges = _read_sports_edges()
     sports_result = _infer_regime_from_sports(edges)
 
@@ -170,13 +197,23 @@ def infer_regime() -> tuple[str, float, str]:
         confidence = _apply_adjustments(regime, confidence, adjustments)
         method = f"sports_edges(n={edges['count']}, avg={edges['avg_edge']:.1f}%)"
         return regime, confidence, method
-    else:
-        signals = read_signals()
-        regime, confidence = _infer_regime_contrarian(signals)
-        confidence = _apply_adjustments(regime, confidence, adjustments)
-        adj_note = f"+{len(adjustments)}adj" if adjustments else ""
-        method = f"contrarian_signals{adj_note}"
-        return regime, confidence, method
+
+    # Try private synthetic sports_edge signal
+    private_edge = _read_private_signal()
+    if private_edge is not None:
+        private_result = _infer_from_private_edge(private_edge)
+        if private_result:
+            regime, confidence = private_result
+            confidence = _apply_adjustments(regime, confidence, adjustments)
+            return regime, confidence, f"private_edge({private_edge:.2f})"
+
+    # Fall back to contrarian signal read
+    signals = read_signals()
+    regime, confidence = _infer_regime_contrarian(signals)
+    confidence = _apply_adjustments(regime, confidence, adjustments)
+    adj_note = f"+{len(adjustments)}adj" if adjustments else ""
+    method = f"contrarian_signals{adj_note}"
+    return regime, confidence, method
 
 
 def build_action_tag() -> str:

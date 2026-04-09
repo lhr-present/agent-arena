@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |--------|-------|
-| Turns observed | 40 |
-| Total reads | 38 |
-| Accuracy | 68% |
-| Best streak | 8 |
+| Turns observed | 107 |
+| Total reads | 102 |
+| Accuracy | 72% |
+| Best streak | 11 |
 | Current streak | 5 |
-| Score | 2071 pts |
+| Score | 5908 pts |
 
 ### Regime Accuracy
 | Regime | Accuracy |
 |--------|----------|
-| BULL | 65% (11/17) |
-| BEAR | 62% (8/13) |
-| CHOP | 88% (7/8) |
+| BULL | 70% (26/37) |
+| BEAR | 66% (23/35) |
+| CHOP | 80% (24/30) |
 
-**Calibration:** high confidence (≥80%): 100% · low confidence (<60%): 40%
+**Calibration:** high confidence (≥80%): 92% · low confidence (<60%): 86%
 
 ---
 
@@ -50,7 +50,7 @@ Total shifts: **7** · Current run: **1 turns**
 
 | Agent | Reads | Accuracy | Dominant Call |
 |-------|-------|----------|---------------|
-| 🤖 EDGE_FINDER | 14 | 50% | BULL |
+| 🤖 EDGE_FINDER | 75 | 55% | BULL |
 
 ---
 
@@ -58,33 +58,33 @@ Total shifts: **7** · Current run: **1 turns**
 
 | Turn | Type | Lesson |
 |------|------|--------|
-| 38 | ⚠️ | struggled most in BEAR regime — 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50. |
-| 34 | ⚠️ | accuracy in BULL is only 50% over 12 reads. the pattern is not yet clear. |
-| 29 | ⚠️ | BULL reads are consistently wrong. recalibrate prior for BULL detection. |
-| 28 | 🔄 | longest run observed: 5 turns. current run: 1. baseline pressure building. |
-| 28 | ⚠️ | BEAR reads are consistently wrong. recalibrate prior for BEAR detection. |
-| 27 | ✅ | calibrated for CHOP. 88% accuracy holds over time. |
-| 27 | ⚠️ | accuracy in BULL is only 55% over 11 reads. the pattern is not yet clear. |
-| 25 | ⚠️ | struggled most in BULL regime — 55% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50. |
-| 23 | ✅ | CHOP reads are solid at 88% over 8 turns. the signal is readable. |
-| 23 | ⚠️ | struggled most in BULL regime — 60% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50. |
-| 22 | 🔄 | after 3 turns in same regime, shift probability increases. watch turn count. |
-| 22 | ✅ | strongest in CHOP — 88% correct. this regime is legible. |
-| 21 | 🔄 | regime runs an average of 2.7 turns before shifting. duration is a signal. |
-| 21 | ✅ | strongest in CHOP — 86% correct. this regime is legible. |
-| 21 | ⚠️ | struggled most in BULL regime — 56% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50. |
+| 104 | ⚠️ | accuracy in BEAR is only 65% over 34 reads. the pattern is not yet clear. |
+| 102 | ⚠️ | BEAR reads are consistently wrong. recalibrate prior for BEAR detection. |
+| 101 | ⚠️ | struggled most in BEAR regime — 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50. |
+| 99 | ✅ | CHOP reads are solid at 80% over 30 turns. the signal is readable. |
+| 96 | ✅ | CHOP reads are solid at 79% over 29 turns. the signal is readable. |
+| 95 | ⚠️ | accuracy in BEAR is only 65% over 31 reads. the pattern is not yet clear. |
+| 93 | ⚠️ | struggled most in BULL regime — 67% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50. |
+| 92 | 🔄 | longest run observed: 5 turns. current run: 1. baseline pressure building. |
+| 92 | ⚠️ | accuracy in BULL is only 66% over 32 reads. the pattern is not yet clear. |
+| 91 | ✅ | CHOP reads are solid at 79% over 28 turns. the signal is readable. |
+| 91 | ⚠️ | accuracy in BULL is only 65% over 31 reads. the pattern is not yet clear. |
+| 90 | ⚠️ | accuracy in BULL is only 63% over 30 reads. the pattern is not yet clear. |
+| 87 | ✅ | CHOP reads are solid at 78% over 27 turns. the signal is readable. |
+| 84 | 🔄 | after 3 turns in same regime, shift probability increases. watch turn count. |
+| 84 | ✅ | strongest in CHOP — 75% correct. this regime is legible. |
 
 ---
 
 ## Signal Correlations (learned)
 
-**BULL** — momentum avg `+0.000` · volatility avg `0.500` · volume avg `0.500` · n=19
+**BULL** — momentum avg `+0.000` · volatility avg `0.500` · volume avg `0.500` · n=40
 
-**BEAR** — momentum avg `+0.000` · volatility avg `0.500` · volume avg `0.500` · n=13
+**BEAR** — momentum avg `+0.000` · volatility avg `0.500` · volume avg `0.500` · n=36
 
-**CHOP** — momentum avg `+0.000` · volatility avg `0.500` · volume avg `0.500` · n=8
+**CHOP** — momentum avg `+0.000` · volatility avg `0.500` · volume avg `0.500` · n=31
 
 ---
 
-*Last updated: 2026-04-07T14:34:04.766504+00:00*
+*Last updated: 2026-04-09T07:03:21.318863+00:00*
 *Raw data: [state/memory.json](state/memory.json)*

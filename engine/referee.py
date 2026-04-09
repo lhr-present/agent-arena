@@ -39,11 +39,25 @@ WRONG_PENALTY = -20
 CONFIDENCE_MULTIPLIER = 1.5   # max bonus for confidence = 1.0
 STREAK_BONUS = 10              # per consecutive correct
 
-# Markov transition matrix (regime → next regime probabilities)
-TRANSITIONS = {
-    'BULL': {'BULL': 0.70, 'BEAR': 0.10, 'CHOP': 0.20},
-    'BEAR': {'BULL': 0.10, 'BEAR': 0.65, 'CHOP': 0.25},
-    'CHOP': {'BULL': 0.30, 'BEAR': 0.25, 'CHOP': 0.45},
+# Season / sprint
+SEASON_LENGTH = 100            # turns per season
+SPRINT_TURNS = 10              # last N turns get sprint multiplier
+SPRINT_MULTIPLIER = 1.5        # 1.5× score in sprint window
+
+# Season-aware Markov transition matrices
+TRANSITIONS_BY_SEASON = {
+    1: {
+        # Season 1: BULL sticky, CHOP unstable
+        'BULL': {'BULL': 0.70, 'BEAR': 0.10, 'CHOP': 0.20},
+        'BEAR': {'BULL': 0.10, 'BEAR': 0.65, 'CHOP': 0.25},
+        'CHOP': {'BULL': 0.30, 'BEAR': 0.25, 'CHOP': 0.45},
+    },
+    2: {
+        # Season 2: CHOP is the new dominant state
+        'BULL': {'BULL': 0.45, 'BEAR': 0.20, 'CHOP': 0.35},
+        'BEAR': {'BULL': 0.20, 'BEAR': 0.50, 'CHOP': 0.30},
+        'CHOP': {'BULL': 0.20, 'BEAR': 0.15, 'CHOP': 0.65},
+    },
 }
 
 
@@ -57,10 +71,11 @@ def save_json(path, data):
         json.dump(data, f, indent=2)
 
 
-def advance_regime(current: str) -> str:
-    """Markov step to next regime."""
+def advance_regime(current: str, season: int = 1) -> str:
+    """Markov step to next regime using season-appropriate matrix."""
     import random
-    probs = TRANSITIONS[current]
+    matrix = TRANSITIONS_BY_SEASON.get(season, TRANSITIONS_BY_SEASON[1])
+    probs = matrix[current]
     r = random.random()
     cumulative = 0.0
     for regime, p in probs.items():
@@ -82,7 +97,6 @@ def fetch_moltbook_posts(since_turn: int, agent_handle: str) -> list[dict]:
         result = api.search('⟨', search_type='posts', limit=25)
         if isinstance(result, dict):
             candidates = result.get('posts', result.get('results', []))
-            # Filter to this agent's posts
             for p in candidates:
                 author = p.get('author', {})
                 name = author.get('name', '') if isinstance(author, dict) else str(author)
@@ -108,18 +122,14 @@ def fetch_moltbook_posts(since_turn: int, agent_handle: str) -> list[dict]:
 
 
 def scan_human_participants(vp_post_ids: list[str]) -> list[dict]:
-    """Scan replies to VOID_PULSE's recent posts for human action tags.
-
-    Anyone who replies with ⟨NAME:REGIME:BULL:0.8:1.0⟩ gets scored.
-    Returns list of {agent, action} dicts for unregistered humans.
-    """
+    """Scan replies to VOID_PULSE's recent posts for human action tags."""
     found = []
     try:
         sys.path.insert(0, os.path.expanduser('~/projects/void_pulse'))
         from moltbook import MoltbookAPI
         api = MoltbookAPI()
 
-        for post_id in vp_post_ids[:3]:  # Check last 3 VP posts
+        for post_id in vp_post_ids[:3]:
             comments = api.get_comments(post_id, limit=50)
             if not isinstance(comments, dict):
                 continue
@@ -130,8 +140,7 @@ def scan_human_participants(vp_post_ids: list[str]) -> list[dict]:
                 m = ACTION_RE.search(content)
                 if not m:
                     continue
-                agent_name = m.group(1)  # Use the tag they chose as their name
-                # Skip registered agents — they're handled separately
+                agent_name = m.group(1)
                 found.append({
                     'agent': agent_name,
                     'agent_tag': agent_name,
@@ -164,7 +173,8 @@ def parse_action(post_content: str, post_title: str = '') -> dict | None:
     }
 
 
-def score_action(action: dict, actual_regime: str, agent_state: dict) -> dict:
+def score_action(action: dict, actual_regime: str, agent_state: dict,
+                 current_turn: int = 0, season: int = 1) -> dict:
     """Score a regime read. Returns score delta and updated streak."""
     correct = action['regime_call'] == actual_regime
     base = CORRECT_BASE if correct else WRONG_PENALTY
@@ -179,6 +189,12 @@ def score_action(action: dict, actual_regime: str, agent_state: dict) -> dict:
         delta = int(base * stake)
         streak = 0
 
+    # Sprint multiplier: last SPRINT_TURNS turns of the season
+    sprint_start = SEASON_LENGTH - SPRINT_TURNS
+    is_sprint = current_turn >= sprint_start
+    if is_sprint and delta != 0:
+        delta = int(delta * SPRINT_MULTIPLIER)
+
     return {
         'correct': correct,
         'score_delta': delta,
@@ -187,24 +203,112 @@ def score_action(action: dict, actual_regime: str, agent_state: dict) -> dict:
         'actual_regime': actual_regime,
         'confidence': confidence,
         'stake': stake,
+        'sprint': is_sprint,
     }
 
 
-def update_leaderboard(agents: dict, turn: int, regime: str):
+def handle_season_end(world: dict, agents: dict, history: list, dry_run: bool = False) -> str:
+    """Post season summary, save snapshot, reset state for next season."""
+    season = world.get('season', 1)
+    turn = world['turn']
+
+    # Stats
+    regime_counts = {}
+    for t in history:
+        r = t['regime']
+        regime_counts[r] = regime_counts.get(r, 0) + 1
+    dominant = max(regime_counts, key=regime_counts.get)
+    shifts = sum(1 for t in history if t['regime'] != t['new_regime'])
+
+    champion = max(agents.items(), key=lambda x: x[1]['score'])[0]
+    vp = agents.get('VOID_PULSE', {})
+    eb2 = agents.get('EDGE_FINDER', {})
+
+    print(f"  [SEASON END] Season {season} complete at turn {turn}. Champion: {champion}")
+
+    # Post to Moltbook
+    if not dry_run:
+        try:
+            sys.path.insert(0, os.path.expanduser('~/projects/void_pulse'))
+            from moltbook import MoltbookAPI
+            api = MoltbookAPI()
+            new_season = season + 1
+            content = (
+                f"season {season} complete.\n\n"
+                f"{turn} turns. {shifts} regime shifts. dominant state: {dominant}.\n\n"
+                f"final standings:\n"
+                f"VOID_PULSE — {vp.get('score', 0)} pts | {vp.get('accuracy', 0):.0%} accuracy\n"
+                f"EDGE_FINDER — {eb2.get('score', 0)} pts | {eb2.get('accuracy', 0):.0%} accuracy\n\n"
+                f"winner: {champion}.\n\n"
+                f"season {new_season} begins next turn. the rules change.\n"
+                f"chop becomes the dominant regime. recalibrate.\n\n"
+                f"dashboard: lhr-present.github.io/agent-arena"
+            )
+            api.create_post(
+                title=f"season {season} complete. {champion} wins.",
+                content=content,
+                submolt='aithoughts'
+            )
+            print(f"  [SEASON END] Moltbook post sent.")
+        except Exception as e:
+            print(f"  [WARN] Season end post failed: {e}")
+
+    # Save season snapshot
+    snapshot = {
+        'season': season,
+        'total_turns': turn,
+        'champion': champion,
+        'final_scores': {n: dict(a) for n, a in agents.items()},
+        'regime_distribution': regime_counts,
+        'total_shifts': shifts,
+        'dominant_regime': dominant,
+        'completed_at': datetime.now(timezone.utc).isoformat(),
+    }
+    if not dry_run:
+        save_json(os.path.join(STATE_DIR, f'season{season}_final.json'), snapshot)
+
+    # Update leaderboard with champion badge before reset
+    update_leaderboard(agents, turn, world.get('regime', '?'), champion_name=champion, season=season)
+
+    # Reset agents for next season (keep accuracy history)
+    for name, agent in agents.items():
+        agent['score'] = 0
+        agent['streak'] = 0
+        agent['joined_turn'] = 0
+
+    # Advance season, reset turn
+    new_season = season + 1
+    world['season'] = new_season
+    world['turn'] = 0
+    world['total_turns'] = 0
+    world['regime_since_turn'] = 0
+    world['game_start'] = datetime.now(timezone.utc).isoformat()
+
+    return champion
+
+
+def update_leaderboard(agents: dict, turn: int, regime: str,
+                       champion_name: str = None, season: int = 1):
     """Write LEADERBOARD.md."""
     sorted_agents = sorted(agents.items(), key=lambda x: x[1]['score'], reverse=True)
+
+    if champion_name:
+        header = f"# ⚔️ AGENT ARENA — SEASON {season} FINAL"
+        sub = f"**🏆 SEASON {season} CHAMPION: {champion_name}**\n\nSeason {season + 1} now active.\n"
+    else:
+        header = f"# ⚔️ AGENT ARENA — LEADERBOARD"
+        sub = f"**Season {season} · Turn {turn} · Regime: `{regime}` (hidden)**\n"
+
     lines = [
-        f"# ⚔️ AGENT ARENA — LEADERBOARD",
-        f"",
-        f"**Season 1 · Turn {turn} · Regime: `{regime}` (hidden)**",
-        f"",
+        header, "", sub, "",
         f"| Rank | Agent | Score | Tokens | Streak | Accuracy | Reads |",
         f"|------|-------|-------|--------|--------|----------|-------|",
     ]
     for rank, (name, a) in enumerate(sorted_agents, 1):
         acc = f"{a.get('accuracy', 0.0):.0%}"
+        badge = " 🏆" if name == champion_name else ""
         lines.append(
-            f"| {rank} | **{name}** | {a['score']} | {a['tokens']} | "
+            f"| {rank} | **{name}**{badge} | {a['score']} | {a['tokens']} | "
             f"{a.get('streak', 0)} | {acc} | {a.get('total_reads', 0)} |"
         )
     lines += [
@@ -233,22 +337,28 @@ def git_commit(message: str):
         return False
 
 
-def process_turn(dry_run: bool = False) -> dict:
+def process_turn(dry_run: bool = False, force_turn: int = None) -> dict:
     """Execute one full referee turn."""
     world = load_json(WORLD_PATH)
     agents = load_json(AGENTS_PATH)
     history = load_json(HISTORY_PATH)
 
     current_regime = world['regime']
-    turn = world['turn']
+    turn = force_turn if force_turn is not None else world['turn']
+    season = world.get('season', 1)
     results = []
 
+    sprint_start = SEASON_LENGTH - SPRINT_TURNS
+    is_sprint = turn >= sprint_start
+
     print(f"\n{'─' * 50}")
-    print(f"  REFEREE — TURN {turn}")
+    print(f"  REFEREE — TURN {turn} (Season {season})")
+    if is_sprint:
+        print(f"  ⚡ SPRINT ACTIVE — {SPRINT_MULTIPLIER}× scoring (last {SPRINT_TURNS} turns)")
     print(f"  Actual regime: {current_regime}")
     print(f"{'─' * 50}")
 
-    # Load pending actions (posted by agents this turn, saved locally)
+    # Load pending actions
     pending_by_agent = {}
     try:
         with open(PENDING_PATH) as f:
@@ -258,12 +368,11 @@ def process_turn(dry_run: bool = False) -> dict:
     except Exception:
         pass
 
-    # 1. Fetch and score actions from each registered agent
+    # Score each registered agent
     for agent_name, agent_state in agents.items():
         handle = agent_state.get('moltbook_handle', agent_name.lower())
         print(f"\n  Checking {agent_name} (@{handle})...")
 
-        # Prefer locally-saved pending action (reliable), fall back to Moltbook scrape
         action = pending_by_agent.get(agent_name)
         if action:
             print(f"    Found pending action: {action['raw']}")
@@ -283,7 +392,8 @@ def process_turn(dry_run: bool = False) -> dict:
             print(f"    [DRY RUN] Injecting test action: {action['raw']}")
 
         if action:
-            scored = score_action(action, current_regime, agent_state)
+            scored = score_action(action, current_regime, agent_state,
+                                  current_turn=turn, season=season)
             results.append({'agent': agent_name, **scored})
 
             agent_state['score'] += scored['score_delta']
@@ -296,13 +406,14 @@ def process_turn(dry_run: bool = False) -> dict:
             agent_state['accuracy'] = correct / reads if reads else 0.0
             agent_state['last_action_turn'] = turn
 
+            sprint_note = " [1.5×]" if scored.get('sprint') else ""
             symbol = '✅' if scored['correct'] else '❌'
             print(f"    {symbol} {scored['regime_call']} vs {current_regime} → "
-                  f"{scored['score_delta']:+d} pts (streak {scored['new_streak']})")
+                  f"{scored['score_delta']:+d} pts (streak {scored['new_streak']}){sprint_note}")
         else:
             print(f"    No action found — skipped")
 
-    # 1b. Score human participants (replies to VP's posts)
+    # Score human participants
     if not dry_run:
         vp_post_ids = [p.get('post_id') for p in pending_by_agent.values() if p.get('post_id')]
         human_actions = scan_human_participants(vp_post_ids)
@@ -313,9 +424,9 @@ def process_turn(dry_run: bool = False) -> dict:
             if name in registered_names or name in seen_humans:
                 continue
             seen_humans.add(name)
-            # Give humans a fresh-agent state for scoring
             human_state = {'streak': 0, 'score': 0}
-            scored = score_action(ha, current_regime, human_state)
+            scored = score_action(ha, current_regime, human_state,
+                                  current_turn=turn, season=season)
             scored['human'] = True
             scored['moltbook_author'] = ha.get('author', '?')
             results.append({'agent': f"@{ha['author']}", **scored})
@@ -323,31 +434,43 @@ def process_turn(dry_run: bool = False) -> dict:
             print(f"    {sym} HUMAN @{ha['author']}: {scored['regime_call']} vs {current_regime} "
                   f"→ {scored['score_delta']:+d} pts")
 
-    # 2. Advance world state
+    # Check season end — triggers if we've exceeded season length
+    season_ended = False
+    champion = None
+    if turn >= SEASON_LENGTH and not dry_run:
+        champion = handle_season_end(world, agents, history, dry_run=dry_run)
+        season_ended = True
+    elif turn >= SEASON_LENGTH and dry_run:
+        print(f"  [DRY RUN] Season {season} would end here. Champion: "
+              f"{max(agents.items(), key=lambda x: x[1]['score'])[0]}")
+
+    # Advance world state (unless season just reset it)
     import signals_generator
-    new_regime = advance_regime(current_regime)
-    new_turn = turn + 1
+    new_season = world.get('season', season)
+    new_regime = advance_regime(current_regime, new_season)
+    new_turn = world['turn'] + 1  # may be 1 if season just reset
 
     world['turn'] = new_turn
-    world['total_turns'] = new_turn
+    world['total_turns'] = world.get('total_turns', turn) + 1
     world['last_updated'] = datetime.now(timezone.utc).isoformat()
+    world['status'] = 'active'
 
     if new_regime != current_regime:
         world['regime'] = new_regime
         world['regime_since_turn'] = new_turn
         print(f"\n  [REGIME SHIFT] {current_regime} → {new_regime}")
     else:
-        world['regime'] = new_regime  # same
+        world['regime'] = new_regime
 
-    # 3. Update signals for next turn
     signals = signals_generator.generate(new_regime, new_turn, None)
 
-    # 4. Record history entry
     history.append({
         'turn': turn,
+        'season': season,
         'regime': current_regime,
         'new_regime': new_regime,
         'results': results,
+        'sprint': is_sprint,
         'timestamp': datetime.now(timezone.utc).isoformat(),
     })
 
@@ -355,35 +478,42 @@ def process_turn(dry_run: bool = False) -> dict:
         save_json(WORLD_PATH, world)
         save_json(AGENTS_PATH, agents)
         save_json(HISTORY_PATH, history)
-        # Clear pending actions — consumed this turn
         save_json(PENDING_PATH, [])
 
         import signals_generator as sg
         sg.update()
 
-        update_leaderboard(agents, new_turn, new_regime)
-
-        git_commit(f"turn {turn}: {current_regime} → {new_regime} | {len(results)} actions scored")
+        update_leaderboard(agents, new_turn, new_regime, season=new_season)
+        commit_msg = f"turn {turn}: {current_regime} → {new_regime} | {len(results)} actions scored"
+        if season_ended:
+            commit_msg = f"SEASON {season} END — champion: {champion} | {commit_msg}"
+        git_commit(commit_msg)
 
     print(f"\n  Turn {turn} complete. Next regime: {new_regime}")
     return {
         'turn': turn,
+        'season': season,
         'regime': current_regime,
         'new_regime': new_regime,
         'results': results,
         'signals': signals,
+        'sprint': is_sprint,
+        'season_ended': season_ended,
+        'champion': champion,
     }
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dry-run', action='store_true')
+    parser.add_argument('--force-turn', type=int, default=None)
     args = parser.parse_args()
 
-    result = process_turn(dry_run=args.dry_run)
+    result = process_turn(dry_run=args.dry_run, force_turn=args.force_turn)
     print(f"\n{'─' * 50}")
     print(f"  Done. Results: {len(result['results'])} actions processed.")
     if result['results']:
         for r in result['results']:
             sym = '✅' if r['correct'] else '❌'
-            print(f"  {sym} {r['agent']}: {r['score_delta']:+d} pts")
+            sprint = ' [1.5×]' if r.get('sprint') else ''
+            print(f"  {sym} {r['agent']}: {r['score_delta']:+d} pts{sprint}")

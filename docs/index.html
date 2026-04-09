@@ -91,11 +91,37 @@
 
   /* Timeline */
   #timeline { display: flex; flex-wrap: wrap; gap: 3px; }
-  .tb { width: 10px; height: 15px; }
+  .tb { width: 10px; height: 15px; cursor: pointer; transition: opacity 0.15s; }
+  .tb:hover { opacity: 0.65; }
   .tb-BULL { background: var(--bull); }
   .tb-BEAR { background: var(--bear); }
   .tb-CHOP { background: var(--chop); }
   .tb-shift { outline: 1px solid rgba(255,255,255,0.7); }
+  .tb-highlighted { outline: 2px solid white; animation: tb-pulse 1s ease-in-out 4; }
+  @keyframes tb-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* Turn overlay */
+  #turn-overlay { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: var(--surface); border: 1px solid var(--border); padding: 18px 24px;
+    z-index: 100; min-width: 280px; }
+  #turn-overlay.visible { display: block; }
+  #turn-overlay .ov-title { font-size: 13px; color: var(--bright); margin-bottom: 10px; }
+  #turn-overlay .ov-row { font-size: 11px; color: var(--dim); margin-bottom: 4px; }
+  #turn-overlay .ov-close { margin-top: 12px; font-size: 10px; color: var(--dim); cursor: pointer; }
+  #turn-overlay .ov-close:hover { color: var(--text); }
+
+  /* Copy toast */
+  #copy-toast { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--surface); border: 1px solid var(--dim); padding: 6px 14px;
+    font-size: 11px; color: var(--text); z-index: 200; }
+  #copy-toast.visible { display: block; }
+
+  /* Community reads */
+  .comm-bar-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .comm-label { width: 40px; font-size: 11px; }
+  .comm-track { flex: 1; height: 12px; background: #0a150c; }
+  .comm-fill { height: 100%; transition: width 0.6s; }
+  .comm-pct { width: 36px; text-align: right; font-size: 11px; color: var(--bright); }
 
   /* Table */
   .scroll-x { overflow-x: auto; }
@@ -140,6 +166,16 @@
     <div class="card"><div class="card-title">Volatility</div><div class="stat-val" id="s-vol">—</div><div class="stat-label">current signal</div></div>
   </div>
 
+  <!-- Turn deep-link overlay -->
+  <div id="turn-overlay">
+    <div class="ov-title" id="ov-title">TURN —</div>
+    <div class="ov-row" id="ov-regime"></div>
+    <div class="ov-row" id="ov-vp"></div>
+    <div class="ov-row" id="ov-eb2"></div>
+    <div class="ov-close" onclick="closeOverlay()">[ close · esc ]</div>
+  </div>
+  <div id="copy-toast">link copied</div>
+
   <!-- Signals + Distribution -->
   <div class="grid-2">
     <div class="card">
@@ -169,8 +205,17 @@
     </div>
   </div>
 
-  <!-- Agent cards -->
-  <div class="grid-2" id="agent-cards"></div>
+  <!-- Community reads + Agent cards -->
+  <div class="grid-2">
+    <div class="card" id="community-panel">
+      <div class="card-title">Community Read — last 20 human calls</div>
+      <div id="community-content">
+        <div style="font-size:11px;color:var(--dim);font-style:italic">no community reads yet — post ⟨NAME:REGIME:BULL:0.8:1.0⟩ to vote</div>
+      </div>
+      <div style="font-size:10px;color:var(--dim);margin-top:10px">based on last 20 human calls · not predictive · just signal</div>
+    </div>
+    <div id="agent-cards"></div>
+  </div>
 
   <!-- Cumulative score chart -->
   <div class="card" style="margin-bottom:14px">
@@ -301,8 +346,18 @@ function render(world, agents, sigs, hist) {
   // Table
   buildTable(hist);
 
+  // Community reads
+  buildCommunityPanel(hist);
+
   // Ticker
   buildTicker(world, agents, sigs, hist);
+
+  // Deep link (on first load only)
+  _historyRef = hist;
+  if (!window._deepLinkChecked) {
+    window._deepLinkChecked = true;
+    setTimeout(() => handleDeepLink(hist), 400);
+  }
 
   prevRegime = regime;
 }
@@ -485,13 +540,24 @@ function scoreChartOpts(annotations, yLabel) {
 function buildTimeline(hist) {
   const tl = document.getElementById('timeline');
   tl.innerHTML = '';
-  for (const t of hist) {
+  hist.forEach((t, idx) => {
     const d = document.createElement('div');
     const isShift = t.regime !== t.new_regime;
     d.className = 'tb tb-' + t.regime + (isShift ? ' tb-shift' : '');
-    d.title = `T${t.turn}: ${t.regime}${isShift ? ' → ' + t.new_regime : ''}`;
+    d.title = `T${t.turn}: ${t.regime}${isShift ? ' → ' + t.new_regime : ''} (click to view · right-click to copy link)`;
+    d.addEventListener('click', () => {
+      showTurnOverlay(t);
+      // Highlight
+      document.querySelectorAll('.tb').forEach(el => el.classList.remove('tb-highlighted'));
+      d.classList.add('tb-highlighted');
+    });
+    d.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      const url = `https://lhr-present.github.io/agent-arena#t${t.turn}`;
+      navigator.clipboard.writeText(url).then(showCopyToast);
+    });
     tl.appendChild(d);
-  }
+  });
 }
 
 function buildTable(hist) {
@@ -533,6 +599,91 @@ function buildTicker(world, agents, sigs, hist) {
   ];
   const txt = parts.join('   ·····   ');
   document.getElementById('ticker').textContent = txt + '   ·····   ' + txt;
+}
+
+// ── Deep links & timeline click ──
+let _historyRef = [];
+
+function showTurnOverlay(turnData) {
+  const t = turnData;
+  document.getElementById('ov-title').textContent =
+    `TURN ${t.turn}${t.regime !== t.new_regime ? ' — REGIME SHIFT' : ''}`;
+  document.getElementById('ov-regime').textContent =
+    `regime: ${t.regime}${t.regime !== t.new_regime ? ' → ' + t.new_regime : ''} · ${t.sprint ? '⚡ sprint' : ''}`;
+  const vp = t.results.find(r => r.agent === 'VOID_PULSE');
+  const eb2 = t.results.find(r => r.agent === 'EDGE_FINDER');
+  document.getElementById('ov-vp').textContent = vp
+    ? `VOID_PULSE: ${vp.correct ? '✓' : '✗'} ${vp.regime_call} · ${vp.score_delta > 0 ? '+' : ''}${vp.score_delta} pts`
+    : 'VOID_PULSE: no action';
+  document.getElementById('ov-eb2').textContent = eb2
+    ? `EDGE_FINDER: ${eb2.correct ? '✓' : '✗'} ${eb2.regime_call} · ${eb2.score_delta > 0 ? '+' : ''}${eb2.score_delta} pts`
+    : 'EDGE_FINDER: no action';
+  document.getElementById('turn-overlay').classList.add('visible');
+}
+
+function closeOverlay() {
+  document.getElementById('turn-overlay').classList.remove('visible');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+function showCopyToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('visible');
+  setTimeout(() => t.classList.remove('visible'), 1800);
+}
+
+function handleDeepLink(hist) {
+  const hash = window.location.hash;
+  const m = hash.match(/^#t(\d+)$/);
+  if (!m) return;
+  const targetTurn = parseInt(m[1]);
+  const turnData = hist.find(t => t.turn === targetTurn);
+  if (!turnData) return;
+
+  // Highlight timeline block
+  document.querySelectorAll('.tb').forEach(el => el.classList.remove('tb-highlighted'));
+  const blocks = document.querySelectorAll('.tb');
+  const idx = hist.indexOf(turnData);
+  if (blocks[idx]) {
+    blocks[idx].classList.add('tb-highlighted');
+    blocks[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  showTurnOverlay(turnData);
+}
+
+// Community reads panel
+function buildCommunityPanel(hist) {
+  const recent = hist.slice(-20);
+  const humanResults = [];
+  for (const t of recent) {
+    for (const r of t.results) {
+      if (r.human) humanResults.push({ ...r, actual: t.regime });
+    }
+  }
+
+  const panel = document.getElementById('community-content');
+  if (humanResults.length < 1) {
+    panel.innerHTML = '<div style="font-size:11px;color:var(--dim);font-style:italic">no community reads yet — post ⟨NAME:REGIME:BULL:0.8:1.0⟩ to vote</div>';
+    return;
+  }
+
+  const counts = { BULL: 0, BEAR: 0, CHOP: 0 };
+  humanResults.forEach(r => { if (counts[r.regime_call] !== undefined) counts[r.regime_call]++; });
+  const total = humanResults.length;
+
+  let html = '';
+  for (const [reg, count] of Object.entries(counts)) {
+    const pct = total > 0 ? Math.round(count / total * 100) : 0;
+    html += `<div class="comm-bar-wrap">
+      <div class="comm-label" style="color:${rc(reg)}">${reg}</div>
+      <div class="comm-track"><div class="comm-fill" style="width:${pct}%;background:${rc(reg)}"></div></div>
+      <div class="comm-pct">${pct}%</div>
+    </div>`;
+  }
+  html += `<div style="font-size:10px;color:var(--dim);margin-top:6px">${total} human read${total !== 1 ? 's' : ''} · last 20 turns</div>`;
+  panel.innerHTML = html;
 }
 
 // Boot

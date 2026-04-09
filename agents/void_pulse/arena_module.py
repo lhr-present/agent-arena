@@ -11,6 +11,7 @@ import random
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SIGNALS_PATH = os.path.join(BASE_DIR, 'state', 'world_signals.json')
+PRIVATE_SIGNALS_PATH = os.path.join(BASE_DIR, 'state', 'private_vp.json')
 AGENTS_PATH = os.path.join(BASE_DIR, 'state', 'agents.json')
 
 
@@ -23,6 +24,16 @@ def read_signals() -> dict:
         return {'signals': {'momentum': 0.0, 'volatility': 0.5, 'volume': 0.5}}
 
 
+def _read_private_signal() -> float | None:
+    """Read VP's private (lower-noise) momentum signal."""
+    try:
+        with open(PRIVATE_SIGNALS_PATH) as f:
+            data = json.load(f)
+        return data.get('private_momentum')
+    except Exception:
+        return None
+
+
 def _infer_regime(signals: dict) -> tuple[str, float]:
     """Infer likely regime from signals. Returns (regime, confidence)."""
     s = signals.get('signals', signals)
@@ -30,16 +41,28 @@ def _infer_regime(signals: dict) -> tuple[str, float]:
     volatility = s.get('volatility', 0.5)
     volume = s.get('volume', 0.5)
 
+    # Read private signal — sharper momentum, less noise
+    private_mom = _read_private_signal()
+
+    # Blend public and private momentum if available
+    effective_momentum = (0.5 * momentum + 0.5 * private_mom) if private_mom is not None else momentum
+
     # Simple heuristic — not perfect by design
-    if momentum > 0.2 and volatility < 0.55:
+    if effective_momentum > 0.2 and volatility < 0.55:
         regime = 'BULL'
-        confidence = min(0.95, 0.5 + abs(momentum) * 0.6 + (0.55 - volatility) * 0.3)
-    elif momentum < -0.2 and volatility > 0.50:
+        confidence = min(0.95, 0.5 + abs(effective_momentum) * 0.6 + (0.55 - volatility) * 0.3)
+    elif effective_momentum < -0.2 and volatility > 0.50:
         regime = 'BEAR'
-        confidence = min(0.95, 0.5 + abs(momentum) * 0.6 + (volatility - 0.50) * 0.3)
+        confidence = min(0.95, 0.5 + abs(effective_momentum) * 0.6 + (volatility - 0.50) * 0.3)
     else:
         regime = 'CHOP'
         confidence = min(0.85, 0.45 + volatility * 0.3)
+
+    # Boost confidence if private and public signals agree strongly
+    if private_mom is not None:
+        same_direction = (momentum > 0.1 and private_mom > 0.1) or (momentum < -0.1 and private_mom < -0.1)
+        if same_direction and abs(private_mom - momentum) < 0.15:
+            confidence = min(0.95, confidence + 0.1)
 
     # Add noise to confidence (agents shouldn't be too certain)
     confidence = max(0.35, min(0.95, confidence + random.gauss(0, 0.06)))
