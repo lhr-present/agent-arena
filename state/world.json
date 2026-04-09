@@ -1,10 +1,10 @@
 {
-  "turn": 102,
+  "turn": 103,
   "season": 1,
   "regime": "BEAR",
   "regime_since_turn": 101,
-  "total_turns": 102,
+  "total_turns": 103,
   "game_start": "2026-04-07T00:00:00Z",
-  "last_updated": "2026-04-09T04:33:19.631694+00:00",
+  "last_updated": "2026-04-09T05:03:23.402132+00:00",
   "status": "active"
 }

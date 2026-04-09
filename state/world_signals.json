@@ -1,10 +1,10 @@
 {
-  "turn": 102,
-  "generated_at": "2026-04-09T04:33:19.635958+00:00",
+  "turn": 103,
+  "generated_at": "2026-04-09T05:03:23.413971+00:00",
   "signals": {
-    "momentum": -0.294,
-    "volatility": 0.664,
-    "volume": 0.464
+    "momentum": -0.297,
+    "volatility": 0.836,
+    "volume": 0.335
   },
   "note": "Signals are noisy. Regime is hidden. Read between the lines."
 }
