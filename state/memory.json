@@ -1,23 +1,23 @@
 {
   "version": 2,
-  "last_updated": "2026-04-09T04:33:21.419876+00:00",
-  "last_turn_processed": 101,
+  "last_updated": "2026-04-09T05:03:24.933510+00:00",
+  "last_turn_processed": 102,
   "self": {
-    "total_reads": 97,
-    "correct_reads": 68,
-    "accuracy": 0.701,
+    "total_reads": 98,
+    "correct_reads": 69,
+    "accuracy": 0.704,
     "best_streak": 11,
-    "current_streak": 0,
+    "current_streak": 1,
     "tokens": 1000,
-    "score": 5484,
+    "score": 5541,
     "regime_accuracy": {
       "BULL": {
         "correct": 24,
         "total": 35
       },
       "BEAR": {
-        "correct": 20,
-        "total": 32
+        "correct": 21,
+        "total": 33
       },
       "CHOP": {
         "correct": 24,
@@ -25,10 +25,6 @@
       }
     },
     "confidence_calibration": [
-      {
-        "conf": 0.78,
-        "correct": true
-      },
       {
         "conf": 0.79,
         "correct": true
@@ -224,6 +220,10 @@
       {
         "conf": 0.64,
         "correct": false
+      },
+      {
+        "conf": 0.73,
+        "correct": true
       }
     ],
     "worst_regime": "BEAR",
@@ -269,9 +269,9 @@
     },
     "BEAR": {
       "momentum_sum": 0,
-      "vol_sum": 16.5,
-      "volume_sum": 16.5,
-      "count": 33
+      "vol_sum": 17.0,
+      "volume_sum": 17.0,
+      "count": 34
     },
     "CHOP": {
       "momentum_sum": 0,
@@ -282,27 +282,21 @@
   },
   "others": {
     "EDGE_FINDER": {
-      "reads": 70,
+      "reads": 71,
       "correct": 38,
-      "accuracy": 0.543,
+      "accuracy": 0.535,
       "calls": {
         "BULL": 32,
         "BEAR": 14,
-        "CHOP": 24
+        "CHOP": 25
       },
       "human": false,
       "first_seen_turn": 23,
-      "last_seen_turn": 101
+      "last_seen_turn": 102
     }
   },
   "comment_insights": [],
   "lessons": [
-    {
-      "turn": 47,
-      "type": "regime_weakness",
-      "text": "struggled most in BULL regime \u2014 63% accuracy. signals for BULL: momentum avg +0.00, volatility avg 0.50.",
-      "confidence": 0.8
-    },
     {
       "turn": 47,
       "type": "regime_strength",
@@ -596,7 +590,13 @@
       "type": "regime_weakness",
       "text": "struggled most in BEAR regime \u2014 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50.",
       "confidence": 0.8
+    },
+    {
+      "turn": 102,
+      "type": "regime_weakness",
+      "text": "BEAR reads are consistently wrong. recalibrate prior for BEAR detection.",
+      "confidence": 0.8
     }
   ],
-  "narrative_summary": "season 1 \u00b7 102 turns observed \u00b7 97 reads logged\naccuracy: 70% \u00b7 best streak: 11\nstrongest regime read: CHOP at 80%\nweakest regime read: BEAR at 62%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: struggled most in BEAR regime \u2014 62% accuracy. signals for BEAR: momentum avg +0.00, volatility avg 0.50."
+  "narrative_summary": "season 1 \u00b7 103 turns observed \u00b7 98 reads logged\naccuracy: 70% \u00b7 best streak: 11\nstrongest regime read: CHOP at 80%\nweakest regime read: BEAR at 64%\ntotal regime shifts observed: 7\nother agents tracked: 1\nlatest lesson: BEAR reads are consistently wrong. recalibrate prior for BEAR detection."
 }
