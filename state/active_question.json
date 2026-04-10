@@ -1,9 +1,9 @@
 {
-  "question": "Will momentum stay positive next turn?",
-  "resolve_key": "momentum_positive",
-  "asked_turn": 56,
-  "deadline_turn": 57,
+  "question": "Will volatility remain above 0.5 next turn?",
+  "resolve_key": "volatility_high",
+  "asked_turn": 58,
+  "deadline_turn": 59,
   "resolution": null,
   "predictions": [],
-  "created_at": "2026-04-10T22:03:19.809597+00:00"
+  "created_at": "2026-04-10T23:03:19.477657+00:00"
 }
