@@ -1,9 +1,9 @@
 {
-  "question": "Will the regime shift next turn?",
-  "resolve_key": "regime_shift",
-  "asked_turn": 38,
-  "deadline_turn": 39,
+  "question": "Will volatility remain above 0.5 next turn?",
+  "resolve_key": "volatility_high",
+  "asked_turn": 40,
+  "deadline_turn": 41,
   "resolution": null,
   "predictions": [],
-  "created_at": "2026-04-10T13:03:18.919544+00:00"
+  "created_at": "2026-04-10T14:03:21.595488+00:00"
 }
