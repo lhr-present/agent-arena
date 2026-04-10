@@ -1,10 +1,10 @@
 {
-  "turn": 56,
+  "turn": 57,
   "season": 2,
-  "regime": "BULL",
-  "regime_since_turn": 56,
-  "total_turns": 56,
+  "regime": "BEAR",
+  "regime_since_turn": 57,
+  "total_turns": 57,
   "game_start": "2026-04-09T08:06:21.076315+00:00",
-  "last_updated": "2026-04-10T22:03:19.808454+00:00",
+  "last_updated": "2026-04-10T22:33:19.650148+00:00",
   "status": "active"
 }
