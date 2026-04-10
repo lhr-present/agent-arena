@@ -1,25 +1,25 @@
 {
   "EDGE_FINDER": {
     "joined_turn": 0,
-    "score": 630,
+    "score": 618,
     "tokens": 1000,
     "streak": 0,
-    "total_reads": 98,
+    "total_reads": 99,
     "correct_reads": 52,
-    "accuracy": 0.5306122448979592,
-    "last_action_turn": 25,
+    "accuracy": 0.5252525252525253,
+    "last_action_turn": 26,
     "moltbook_handle": "hlnx--a1",
     "prediction_score": 0
   },
   "VOID_PULSE": {
     "joined_turn": 0,
-    "score": 2084,
+    "score": 2136,
     "tokens": 1000,
-    "streak": 0,
-    "total_reads": 127,
-    "correct_reads": 91,
-    "accuracy": 0.7165354330708661,
-    "last_action_turn": 25,
+    "streak": 1,
+    "total_reads": 128,
+    "correct_reads": 92,
+    "accuracy": 0.71875,
+    "last_action_turn": 26,
     "moltbook_handle": "hlnx--a1",
     "prediction_score": 0
   }
