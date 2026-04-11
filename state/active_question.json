@@ -1,9 +1,9 @@
 {
   "question": "Will volatility remain above 0.5 next turn?",
   "resolve_key": "volatility_high",
-  "asked_turn": 64,
-  "deadline_turn": 65,
+  "asked_turn": 66,
+  "deadline_turn": 67,
   "resolution": null,
   "predictions": [],
-  "created_at": "2026-04-11T08:33:22.909873+00:00"
+  "created_at": "2026-04-11T09:33:19.558931+00:00"
 }
