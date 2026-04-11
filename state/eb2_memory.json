@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "last_updated": "2026-04-11T09:03:24.390526+00:00",
+  "last_updated": "2026-04-11T09:35:42.640699+00:00",
   "last_turn_processed": 107,
   "self": {
     "total_reads": 76,
     "correct_reads": 41,
     "accuracy": 0.5395,
-    "score": 2359,
-    "streak": 1,
+    "score": 2449,
+    "streak": 2,
     "best_streak": 6,
     "regime_accuracy": {
       "BULL": {
