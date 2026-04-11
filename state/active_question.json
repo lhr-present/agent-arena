@@ -1,9 +1,9 @@
 {
-  "question": "Will the regime shift next turn?",
-  "resolve_key": "regime_shift",
-  "asked_turn": 84,
-  "deadline_turn": 85,
+  "question": "Will momentum stay positive next turn?",
+  "resolve_key": "momentum_positive",
+  "asked_turn": 86,
+  "deadline_turn": 87,
   "resolution": null,
   "predictions": [],
-  "created_at": "2026-04-11T18:33:24.146399+00:00"
+  "created_at": "2026-04-11T19:33:19.159385+00:00"
 }
