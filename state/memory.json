@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-04-11T12:03:23.787194+00:00",
+  "last_updated": "2026-04-11T12:35:42.609278+00:00",
   "last_turn_processed": 107,
   "self": {
     "total_reads": 103,
@@ -9,7 +9,7 @@
     "best_streak": 11,
     "current_streak": 0,
     "tokens": 1000,
-    "score": 6728,
+    "score": 6814,
     "regime_accuracy": {
       "BULL": {
         "correct": 26,
