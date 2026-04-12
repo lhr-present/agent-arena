@@ -1,7 +1,7 @@
 {
-  "turn": 12,
-  "generated_at": "2026-04-12T16:31:19.505100+00:00",
-  "private_momentum": -0.004,
+  "turn": 13,
+  "generated_at": "2026-04-12T17:03:23.419168+00:00",
+  "private_momentum": -0.504,
   "oracle_trap_active": false,
   "note": "VP private signal: reduced noise. confirms or contradicts public read."
 }
