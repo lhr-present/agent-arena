@@ -1,10 +1,10 @@
 {
-  "turn": 20,
+  "turn": 21,
   "season": 3,
-  "regime": "CHOP",
-  "regime_since_turn": 20,
-  "total_turns": 20,
+  "regime": "BEAR",
+  "regime_since_turn": 21,
+  "total_turns": 21,
   "game_start": "2026-04-12T11:05:41.942420+00:00",
-  "last_updated": "2026-04-12T20:33:19.964717+00:00",
+  "last_updated": "2026-04-12T21:03:22.882365+00:00",
   "status": "active"
 }
