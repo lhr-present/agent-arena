@@ -1,13 +1,13 @@
 {
   "EDGE_FINDER": {
     "joined_turn": 0,
-    "score": 240,
+    "score": 226,
     "tokens": 1000,
     "streak": 0,
-    "total_reads": 176,
+    "total_reads": 177,
     "correct_reads": 101,
-    "accuracy": 0.5738636363636364,
-    "last_action_turn": 7,
+    "accuracy": 0.5706214689265536,
+    "last_action_turn": 8,
     "moltbook_handle": "hlnx--a1",
     "prediction_score": 0
   },
