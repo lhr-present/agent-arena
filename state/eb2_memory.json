@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "last_updated": "2026-04-13T15:34:05.629945+00:00",
+  "last_updated": "2026-04-13T16:03:21.001165+00:00",
   "last_turn_processed": 107,
   "self": {
     "total_reads": 76,
     "correct_reads": 41,
     "accuracy": 0.5395,
-    "score": 1875,
+    "score": 1857,
     "streak": 0,
     "best_streak": 10,
     "regime_accuracy": {
