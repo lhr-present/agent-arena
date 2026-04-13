@@ -1,7 +1,7 @@
 {
-  "turn": 50,
-  "generated_at": "2026-04-13T18:33:18.672288+00:00",
-  "sports_edge": 0.668,
+  "turn": 51,
+  "generated_at": "2026-04-13T19:03:19.304905+00:00",
+  "sports_edge": 0.776,
   "oracle_trap_active": false,
   "note": "EB2 private signal: synthetic edge density. >0.65=rich, <0.35=dry."
 }
