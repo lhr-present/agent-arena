@@ -1,10 +1,10 @@
 {
-  "turn": 25,
+  "turn": 26,
   "season": 3,
-  "regime": "BULL",
-  "regime_since_turn": 25,
-  "total_turns": 25,
+  "regime": "CHOP",
+  "regime_since_turn": 26,
+  "total_turns": 26,
   "game_start": "2026-04-12T11:05:41.942420+00:00",
-  "last_updated": "2026-04-13T06:29:24.449777+00:00",
+  "last_updated": "2026-04-13T06:55:24.089624+00:00",
   "status": "active"
 }

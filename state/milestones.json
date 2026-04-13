@@ -5,7 +5,7 @@
   "turbulence_5": 5,
   "oracle_VOID_PULSE_1": 7,
   "oracle_trap_VOID_PULSE": 9,
-  "streak_VOID_PULSE_5": 14,
+  "streak_VOID_PULSE_5": 24,
   "oracle_VOID_PULSE_2": 9,
   "turbulence_11": 11,
   "oracle_VOID_PULSE_3": 12,
@@ -22,7 +22,7 @@
   "turbulence_69": 69,
   "turbulence_96": 96,
   "turbulence_98": 98,
-  "eb2_closing": 20,
+  "eb2_closing": 24,
   "turbulence_13": 13,
   "streak_EDGE_FINDER_10": 22
 }
