@@ -1,10 +1,10 @@
 {
-  "turn": 13,
+  "turn": 14,
   "season": 4,
   "regime": "BULL",
   "regime_since_turn": 13,
-  "total_turns": 13,
+  "total_turns": 14,
   "game_start": "2026-04-15T22:35:41.438957+00:00",
-  "last_updated": "2026-04-16T04:33:23.047010+00:00",
+  "last_updated": "2026-04-16T05:03:19.914419+00:00",
   "status": "active"
 }
